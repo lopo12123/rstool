@@ -60,7 +60,7 @@ pub struct HashImpl {}
 
 impl HashImpl {
     /// 检查目标是否存在且是文件
-    pub(crate) fn check(filepath: &str) -> bool {
+    fn check(filepath: &str) -> bool {
         match fs::metadata(&filepath) {
             Ok(meta) => meta.is_file(),
             Err(_) => false
@@ -70,7 +70,7 @@ impl HashImpl {
     /// 获取目标文件的哈希
     ///
     /// 如果目标不存在或非文件则抛出错误
-    pub fn hash(filepath: &str, algorithm_name: &str) -> Result<String, String> {
+    fn hash(filepath: &str, algorithm_name: &str) -> Result<String, String> {
         if !Self::check(filepath) {
             return Err(format!("file does not exist, or is not a file"));
         }
@@ -103,6 +103,16 @@ impl HashImpl {
             }
             None => Err(format!("Invalid algorithm"))
         }
+    }
+
+    /// 处理 Command::Hash 子命令
+    pub fn handle(file: String, algorithm: String) {
+        println!("[Commands::Hash] file: {}, algorithm: {}", file, algorithm);
+
+        match HashImpl::hash(&file, &algorithm) {
+            Ok(res) => println!("Ok: {}", res),
+            Err(err) => println!("Error: {}", err),
+        };
     }
 }
 

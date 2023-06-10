@@ -3,8 +3,8 @@ use crate::commands::{Cli, Commands};
 use crate::hash::HashImpl;
 
 mod hash;
-mod parser;
 mod commands;
+mod doctor;
 
 fn main() {
     let cmd = Cli::parse().command;
@@ -19,14 +19,8 @@ fn main() {
             println!("[Commands::Greet] name: {}", &person);
             println!("Hello, {}!", person);
         }
-        Commands::Hash { file, algorithm } => {
-            println!("[Commands::Hash] file: {}, algorithm: {}", file, algorithm);
-
-            match HashImpl::hash(&file, &algorithm) {
-                Ok(res) => println!("Ok: {}", res),
-                Err(err) => println!("Error: {}", err),
-            };
-        }
+        Commands::Hash { file, algorithm } => HashImpl::handle(file, algorithm),
+        Commands::Doctor {} => {}
         // _ => println!("Not yet implemented!")
     }
 }
