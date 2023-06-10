@@ -27,8 +27,8 @@ pub enum Commands {
         /// Path to the target file
         #[arg(help = "Path to the target file")]
         file: String,
-        /// The hash algorithm used supports 'md5', 'sha1', 'sha256', and 'sha512' (case insensitive)
-        #[arg(help = "The hash algorithm used supports 'md5', 'sha1', 'sha256', and 'sha512' (case insensitive)")]
+        /// The hash algorithm used, supports 'md5', 'sha1', 'sha256', and 'sha512' (case insensitive)
+        #[arg(help = "The hash algorithm used, supports 'md5', 'sha1', 'sha256', and 'sha512' (case insensitive)")]
         algorithm: String,
     },
 }
