@@ -1,6 +1,7 @@
 use std::env::{consts, split_paths, var};
 
 const PASS: &str = "[√]";
+const WARN: &str = "[!]";
 const FAIL: &str = "[×]";
 
 pub struct DoctorImpl {}
@@ -39,6 +40,20 @@ impl DoctorImpl {
         }
     }
 
+    /// 检查版本
+    fn check_version(verbose: bool) {
+        let version = env!("CARGO_PKG_VERSION");
+        // todo 获取最新版本
+        let latest = "0.1.0";
+
+        let symbol = if latest == version { PASS } else { WARN };
+        if verbose {
+            println!("{symbol} version (latest: '{latest}', current: '{version}')");
+        } else {
+            println!("{symbol} version");
+        }
+    }
+
     /// 处理 Command::Doctor 子命令
     pub fn handle(verbose: bool) {
         println!("[Commands::Doctor] verbose: {verbose}");
@@ -51,6 +66,7 @@ impl DoctorImpl {
 
         DoctorImpl::check_os(verbose);
         DoctorImpl::check_cmd(verbose);
+        DoctorImpl::check_version(verbose);
     }
 }
 
@@ -62,8 +78,7 @@ mod unit_test {
 
     #[test]
     fn check() {
-        // let paths = env::var("PATH").unwrap_or_else(|_| String::new());
-        let paths = env!("PATH");
+        let paths = env::var("PATH").unwrap_or_else(|_| String::new());
         let directories = split_paths(&paths);
 
         for directory in directories {
