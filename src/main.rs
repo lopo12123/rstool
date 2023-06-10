@@ -1,3 +1,9 @@
+use crate::hash::HashImpl;
+
+mod hash;
+
 fn main() {
-    println!("Hello, world!");
+
+    let r = HashImpl::check("./rstool.exe");
+    println!("r: {}", r);
 }
