@@ -46,7 +46,7 @@ impl Algorithm {
 
     /// 从算法名生成
     pub fn from_name(name: &str) -> Option<Algorithm> {
-        match name {
+        match name.to_lowercase().as_str() {
             "md5" => Some(Algorithm::Md5),
             "sha1" => Some(Algorithm::Sha1),
             "sha256" => Some(Algorithm::Sha256),
