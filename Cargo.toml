@@ -3,9 +3,10 @@ name = "rstool"
 version = "0.1.0"
 edition = "2021"
 authors = ["lopo<lopo@zju.edu.cn>"]
-description = "Some small tools written in rust"
+description = "a small tools written in rust"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = { version = "4.0.26", features = ["derive"] }
 regex = "1.7.0"
