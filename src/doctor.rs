@@ -106,16 +106,12 @@ impl DoctorImpl {
 
 #[cfg(test)]
 mod unit_test {
-    use serde::Deserialize;
-    use std::collections::HashMap;
-    use std::env;
     use super::*;
-    use std::env::{consts, split_paths};
-    use reqwest::blocking::get;
+    use std::env::{split_paths};
 
     #[test]
     fn check() {
-        let paths = env::var("PATH").unwrap_or_else(|_| String::new());
+        let paths = var("PATH").unwrap_or_else(|_| String::new());
         let directories = split_paths(&paths);
 
         for directory in directories {
