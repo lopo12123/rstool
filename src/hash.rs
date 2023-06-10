@@ -85,7 +85,7 @@ impl HashImpl {
                     if out.status.success() {
                         let digest = algorithm.find(&stdout);
                         if digest == "" {
-                            Err(format!("Unable to find hash value from the result, the original output is as follows:\n{}", stdout))
+                            Err(format!("Unable to find hash value from the result, the original output is as follows:\n{stdout}"))
                         } else {
                             Ok(digest.to_string())
                         }
@@ -94,7 +94,7 @@ impl HashImpl {
                             if stdout.is_empty() && stderr.is_empty() {
                                 format!("Failed to obtain file hash. No standard output or standard error output")
                             } else {
-                                format!("Failed to obtain file hash. The standard output and standard error output are as follows:\n<stdout>: {}\n<stderr>: {}", stdout, stderr)
+                                format!("Failed to obtain file hash. The standard output and standard error output are as follows:\n<stdout>: {stdout}\n<stderr>: {stderr}")
                             }
                         )
                     }
@@ -110,8 +110,8 @@ impl HashImpl {
         println!("[Commands::Hash] file: {}, algorithm: {}", file, algorithm);
 
         match HashImpl::hash(&file, &algorithm) {
-            Ok(res) => println!("Ok: {}", res),
-            Err(err) => println!("Error: {}", err),
+            Ok(res) => println!("Ok: {res}"),
+            Err(err) => println!("Error: {err}"),
         };
     }
 }

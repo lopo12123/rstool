@@ -13,7 +13,10 @@ pub struct Cli {
 pub enum Commands {
     /// Say hello to you
     #[command(about = "Check the version, availability, and other information of this tool")]
-    Doctor {},
+    Doctor {
+        #[arg(short, long, help = "Whether to output complete information")]
+        verbose: bool
+    },
     /// Get the specified hash value of the target file
     #[command(about = "Get the specified hash value of the target file")]
     Hash {
