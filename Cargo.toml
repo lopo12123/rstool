@@ -10,3 +10,5 @@ description = "a small tools written in rust"
 [dependencies]
 clap = { version = "4.0.26", features = ["derive"] }
 regex = "1.7.0"
+reqwest = { version = "0.11.13", features = ["blocking", "json"] }
+serde = { version = "1.0.147", features = ["derive"] }

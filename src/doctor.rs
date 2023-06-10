@@ -1,12 +1,37 @@
+use serde::Deserialize;
 use std::env::{consts, split_paths, var};
+
+const OWNER: &str = "lopo12123";
+const REPO: &str = "rstool";
 
 const PASS: &str = "[√]";
 const WARN: &str = "[!]";
 const FAIL: &str = "[×]";
 
+#[derive(Debug, Deserialize)]
+struct ReleaseInfo {
+    tag_name: String,
+}
+
 pub struct DoctorImpl {}
 
 impl DoctorImpl {
+    /// 获取最新版本
+    fn get_latest_version() -> Result<String, String> {
+        match reqwest::blocking::Client::builder().user_agent("reqwest").build() {
+            Ok(client) => match client.get(format!("https://api.github.com/repos/{OWNER}/{REPO}/releases/latest")).send() {
+                Ok(response) => match response.json::<ReleaseInfo>() {
+                    Ok(release_info) => {
+                        Ok(release_info.tag_name.replace("v", ""))
+                    }
+                    Err(_) => Err(format!("failed to parse response"))
+                }
+                Err(_) => Err(format!("failed to send request"))
+            }
+            Err(_) => Err(format!("failed to build request client"))
+        }
+    }
+
     /// 检查操作系统
     fn check_os(verbose: bool) {
         if verbose {
@@ -43,14 +68,23 @@ impl DoctorImpl {
     /// 检查版本
     fn check_version(verbose: bool) {
         let version = env!("CARGO_PKG_VERSION");
-        // todo 获取最新版本
-        let latest = "0.1.0";
 
-        let symbol = if latest == version { PASS } else { WARN };
-        if verbose {
-            println!("{symbol} version (latest: '{latest}', current: '{version}')");
-        } else {
-            println!("{symbol} version");
+        match DoctorImpl::get_latest_version() {
+            Ok(latest) => {
+                let symbol = if latest == version { PASS } else { WARN };
+                if verbose {
+                    println!("{symbol} version (latest: '{latest}', current: '{version}')");
+                } else {
+                    println!("{symbol} version");
+                }
+            }
+            Err(err) => {
+                if verbose {
+                    println!("{FAIL} version ({err})");
+                } else {
+                    println!("{FAIL} version");
+                }
+            }
         }
     }
 
@@ -72,9 +106,12 @@ impl DoctorImpl {
 
 #[cfg(test)]
 mod unit_test {
+    use serde::Deserialize;
+    use std::collections::HashMap;
     use std::env;
     use super::*;
     use std::env::{consts, split_paths};
+    use reqwest::blocking::get;
 
     #[test]
     fn check() {
@@ -90,8 +127,20 @@ mod unit_test {
         }
     }
 
+
     #[test]
     fn tt() {
-        println!("{PASS}");
+        let client = reqwest::blocking::Client::builder()
+            .user_agent("reqwest").build().unwrap();
+
+        match client.get("https://api.github.com/repos/lopo12123/flow-chart/releases/latest").send() {
+            Ok(res) => {
+                let json: ReleaseInfo = res.json().expect("fail to deserialize");
+                println!("res: {:?}", json);
+            }
+            Err(err) => {
+                println!("err: {}", err);
+            }
+        }
     }
 }
