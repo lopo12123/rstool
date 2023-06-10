@@ -12,13 +12,6 @@ pub struct Cli {
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// Say hello to you
-    #[command(about = "Say hello to you")]
-    Greet {
-        /// Your name
-        #[arg(long, help = "Your name")]
-        name: Option<String>
-    },
-    /// Say hello to you
     #[command(about = "Check the version, availability, and other information of this tool")]
     Doctor {},
     /// Get the specified hash value of the target file

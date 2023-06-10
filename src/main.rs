@@ -10,17 +10,8 @@ fn main() {
     let cmd = Cli::parse().command;
 
     match cmd {
-        Commands::Greet { name } => {
-            let person = match name {
-                Some(v) => v,
-                None => "stranger".to_string()
-            };
-
-            println!("[Commands::Greet] name: {}", &person);
-            println!("Hello, {}!", person);
-        }
-        Commands::Hash { file, algorithm } => HashImpl::handle(file, algorithm),
         Commands::Doctor {} => {}
+        Commands::Hash { file, algorithm } => HashImpl::handle(file, algorithm),
         // _ => println!("Not yet implemented!")
     }
 }
