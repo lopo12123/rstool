@@ -107,7 +107,7 @@ impl HashImpl {
 
     /// 处理 Command::Hash 子命令
     pub fn handle(file: String, algorithm: String) {
-        println!("[Commands::Hash] file: {}, algorithm: {}", file, algorithm);
+        println!("[Commands::Hash] file: {file}, algorithm: {algorithm}");
 
         match HashImpl::hash(&file, &algorithm) {
             Ok(res) => println!("Ok: {res}"),
