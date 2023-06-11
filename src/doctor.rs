@@ -90,7 +90,7 @@ impl DoctorImpl {
 
     /// 处理 Command::Doctor 子命令
     pub fn handle(verbose: bool) {
-        println!("[Commands::Doctor] verbose: {verbose}");
+        println!("[Commands::Doctor] verbose: '{verbose}'");
 
         if !verbose {
             println!("Doctor summary (to see all details, run with -v/--verbose):");
