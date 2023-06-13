@@ -1,10 +1,14 @@
+mod direct;
+mod single;
+
 use std::env::current_dir;
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use ipconfig::get_adapters;
-use rocket::{Build, Config, get, launch, Rocket, routes};
-use rocket::fs::NamedFile;
+use rocket::{Config, get, catch, Rocket, routes, Request, catchers};
 use rocket::http::ext::Normalize;
 use rocket::tokio::runtime::Runtime;
+use crate::serve::direct::{index_direct, StateDirect};
+use crate::serve::single::{index_single, StateSingle};
 
 #[derive(Debug)]
 enum ServerMode { Single, Mixed, Direct }
@@ -99,9 +103,14 @@ impl ServerBuilder {
     }
 }
 
-#[get("/")]
-fn index_single(my_str: &rocket::State<String>) -> String {
-    my_str.to_string()
+#[catch(404)]
+fn not_found(req: &Request) -> String {
+    format!("I couldn't find '{}'. Try something else?", req.uri())
+}
+
+#[catch(500)]
+fn internal_error() -> &'static str {
+    "Whoops! Looks like we messed up."
 }
 
 pub struct ServeImpl {}
@@ -125,18 +134,24 @@ impl ServeImpl {
 
     // region 三种启动模式
     /// 单一模式
-    // #[launch]
-    async fn single() {
+    async fn single(entry: PathBuf) {
         let my_str = "自定义参数";
         rocket::build()
-            .manage(my_str.to_string())
+            .manage(StateSingle { entry })
             .mount("/", routes![index_single])
+            .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
     }
     /// 混合模式
     fn mixed() {}
     /// 直接模式
-    fn direct() {}
+    async fn direct(root: PathBuf, entry: PathBuf) {
+        rocket::build()
+            .manage(StateDirect { root, entry })
+            .mount("/", routes![index_direct])
+            .register("/", catchers![not_found, internal_error])
+            .launch().await.ok();
+    }
     // endregion
 
     /// 处理 Command::Serve 子命令
@@ -153,10 +168,14 @@ impl ServeImpl {
                     ServerMode::Single => {
                         Runtime::new()
                             .unwrap()
-                            .block_on(ServeImpl::single());
+                            .block_on(ServeImpl::single(server.entry));
                     }
                     ServerMode::Mixed => ServeImpl::mixed(),
-                    ServerMode::Direct => ServeImpl::direct(),
+                    ServerMode::Direct => {
+                        Runtime::new()
+                            .unwrap()
+                            .block_on(ServeImpl::direct(server.root, server.entry));
+                    }
                 }
             }
             Err(err) => println!("Error: {err}"),
@@ -189,7 +208,10 @@ mod unit_test {
 
     #[test]
     fn ppp() {
-        let p = "D:\\rstool\\target\\debug\\../../examples";
-        println!("{:?}", Path::new(p).canonicalize().unwrap());
+        // let p = "D:\\rstool\\target\\debug\\../../examples";
+        // println!("{:?}", Path::new(p).canonicalize().unwrap());
+
+        let p = PathBuf::from("");
+        println!("p: {p:?}; {}", p == PathBuf::new());
     }
 }
