@@ -3,6 +3,7 @@ mod single;
 mod mixed;
 
 use std::env::current_dir;
+use std::net::{IpAddr, Ipv4Addr};
 use std::path::{PathBuf};
 use ipconfig::get_adapters;
 use rocket::{Config, get, catch, Rocket, routes, Request, catchers};
@@ -136,26 +137,28 @@ impl ServeImpl {
 
     // region 三种启动模式
     /// 单一模式
-    async fn single(entry: PathBuf) {
-        let my_str = "自定义参数";
+    async fn single(config: Config, entry: PathBuf) {
         rocket::build()
             .manage(StateSingle { entry })
+            .configure(config)
             .mount("/", routes![index_single])
             .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
     }
     /// 混合模式
-    async fn mixed(root: PathBuf, entry: PathBuf) {
+    async fn mixed(config: Config, root: PathBuf, entry: PathBuf) {
         rocket::build()
             .manage(StateMixed { root, entry })
+            .configure(config)
             .mount("/", routes![index_mixed])
             .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
     }
     /// 直接模式
-    async fn direct(root: PathBuf, entry: PathBuf) {
+    async fn direct(config: Config, root: PathBuf, entry: PathBuf) {
         rocket::build()
             .manage(StateDirect { root, entry })
+            .configure(config)
             .mount("/", routes![index_direct])
             .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
@@ -172,21 +175,28 @@ impl ServeImpl {
                     println!("[local_ip] http://{ip}:{port}/");
                 }
 
+                let config = Config {
+                    port: server.port,
+                    address: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
+                    // ..Config::debug_default()
+                    ..Config::release_default()
+                };
+
                 match server.mode {
                     ServerMode::Single => {
                         Runtime::new()
                             .unwrap()
-                            .block_on(ServeImpl::single(server.entry));
+                            .block_on(ServeImpl::single(config, server.entry));
                     }
                     ServerMode::Mixed => {
                         Runtime::new()
                             .unwrap()
-                            .block_on(ServeImpl::mixed(server.root, server.entry));
+                            .block_on(ServeImpl::mixed(config, server.root, server.entry));
                     }
                     ServerMode::Direct => {
                         Runtime::new()
                             .unwrap()
-                            .block_on(ServeImpl::direct(server.root, server.entry));
+                            .block_on(ServeImpl::direct(config, server.root, server.entry));
                     }
                 }
             }
