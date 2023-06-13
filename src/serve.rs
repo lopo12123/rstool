@@ -6,7 +6,7 @@ use std::env::current_dir;
 use std::net::{IpAddr, Ipv4Addr};
 use std::path::{PathBuf};
 use ipconfig::get_adapters;
-use rocket::{Config, get, catch, Rocket, routes, Request, catchers};
+use rocket::{Config, catch, routes, Request, catchers};
 use rocket::http::ext::Normalize;
 use rocket::tokio::runtime::Runtime;
 use crate::serve::direct::{index_direct, StateDirect};
