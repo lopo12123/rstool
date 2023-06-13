@@ -1,5 +1,6 @@
 mod direct;
 mod single;
+mod mixed;
 
 use std::env::current_dir;
 use std::path::{PathBuf};
@@ -8,6 +9,7 @@ use rocket::{Config, get, catch, Rocket, routes, Request, catchers};
 use rocket::http::ext::Normalize;
 use rocket::tokio::runtime::Runtime;
 use crate::serve::direct::{index_direct, StateDirect};
+use crate::serve::mixed::{index_mixed, StateMixed};
 use crate::serve::single::{index_single, StateSingle};
 
 #[derive(Debug)]
@@ -143,7 +145,13 @@ impl ServeImpl {
             .launch().await.ok();
     }
     /// 混合模式
-    fn mixed() {}
+    async fn mixed(root: PathBuf, entry: PathBuf) {
+        rocket::build()
+            .manage(StateMixed { root, entry })
+            .mount("/", routes![index_mixed])
+            .register("/", catchers![not_found, internal_error])
+            .launch().await.ok();
+    }
     /// 直接模式
     async fn direct(root: PathBuf, entry: PathBuf) {
         rocket::build()
@@ -161,7 +169,7 @@ impl ServeImpl {
         match ServerBuilder::try_build(root, entry, port, mode) {
             Ok(server) => {
                 for ip in ServeImpl::get_ips() {
-                    println!("[serve_at] http://{ip}:{port}/");
+                    println!("[local_ip] http://{ip}:{port}/");
                 }
 
                 match server.mode {
@@ -170,7 +178,11 @@ impl ServeImpl {
                             .unwrap()
                             .block_on(ServeImpl::single(server.entry));
                     }
-                    ServerMode::Mixed => ServeImpl::mixed(),
+                    ServerMode::Mixed => {
+                        Runtime::new()
+                            .unwrap()
+                            .block_on(ServeImpl::mixed(server.root, server.entry));
+                    }
                     ServerMode::Direct => {
                         Runtime::new()
                             .unwrap()
@@ -211,7 +223,7 @@ mod unit_test {
         // let p = "D:\\rstool\\target\\debug\\../../examples";
         // println!("{:?}", Path::new(p).canonicalize().unwrap());
 
-        let p = PathBuf::from("");
-        println!("p: {p:?}; {}", p == PathBuf::new());
+        let p = PathBuf::from("C:\\Windows\\System32");
+        println!("p: {p:?}; {}", p.exists());
     }
 }

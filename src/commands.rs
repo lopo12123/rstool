@@ -3,7 +3,7 @@ use clap::{Parser, Subcommand};
 const MODE_DESC: &str = "Service mode, which determines how the server handles responses to various requests";
 const SINGLE_MODE: &str = "- single: All requests will get the entry file as a response.";
 const MIXED_MODE: &str = "- mixed: Requests with a suffix will be considered as required resources and try to load the target resource, and the rest of the requests will be directed to the entry file.";
-const DIRECT_MODE: &str = "- direct: For all requests, it will try to go to the corresponding path under the root directory to find resources and return them.";
+const DIRECT_MODE: &str = "- direct: First try to find the resource in the corresponding path under the root directory, if the resource exists and is a file type, return the resource, otherwise return the entry file.";
 
 /// Cli instance
 #[derive(Parser, Debug)]
@@ -44,7 +44,7 @@ pub enum Commands {
         /// Port (1024 ~ 65535), default to '8000'
         #[arg(short, long, help = "Port (1024 ~ 65535)\n", default_value = "8000")]
         port: u16,
-        #[arg(short, long, help = format!("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
+        #[arg(short, long, help = format ! ("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
         mode: String,
     },
 }
