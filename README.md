@@ -36,6 +36,10 @@ Options:
   -V, --version  Print version
 ```
 
+### CHANGELOG
+
+see at [CHANGELOG.md](./CHANGELOG.md)
+
 ---
 
 Last update time: 2023-06-15

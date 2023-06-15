@@ -1,4 +1,4 @@
-### v0.1.0
+### v0.1.0 - 2023.06.15
 
 ```
 Usage: rstool.exe <COMMAND>
@@ -14,6 +14,6 @@ Options:
   -V, --version  Print version
   ```
 
-### v0.1.1
+### v0.1.1 - 2023.06.15
 
 - Remove strict restrictions on ports
