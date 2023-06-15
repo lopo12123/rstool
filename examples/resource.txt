@@ -1,0 +1,1 @@
+This is a resource file that can be obtained through routing (/resource.txt)
