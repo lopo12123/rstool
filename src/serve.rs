@@ -66,14 +66,14 @@ impl ServerBuilder {
         }
     }
 
-    /// port: 1024 ~ 65535
-    fn get_port(port: u16) -> Result<u16, String> {
-        if port < 1024 {
-            Err(format!("invalid port (required: 1024 ~ 65535, received: {port})"))
-        } else {
-            Ok(port)
-        }
-    }
+    // port: 1024 ~ 65535
+    // fn get_port(port: u16) -> Result<u16, String> {
+    //     if port < 1024 {
+    //         Err(format!("invalid port (required: 1024 ~ 65535, received: {port})"))
+    //     } else {
+    //         Ok(port)
+    //     }
+    // }
 
     /// mode: 'single' | 'mixed' | 'direct'
     fn get_mode(mode: &str) -> Result<ServerMode, String> {
@@ -92,7 +92,7 @@ impl ServerBuilder {
         println!("[try_build] root: {:?}", _root.normalized_str());
         let _entry = ServerBuilder::get_entry(_root.clone(), &entry)?;
         println!("[try_build] entry: {:?}", _entry.normalized_str());
-        let _port = ServerBuilder::get_port(port)?;
+        // let _port = ServerBuilder::get_port(port)?;
         println!("[try_build] port: {port}");
         let _mode = ServerBuilder::get_mode(&mode)?;
         println!("[try_build] mode: {_mode:?}");
@@ -100,7 +100,7 @@ impl ServerBuilder {
         Ok(ServerBuilder {
             root: _root,
             entry: _entry,
-            port: _port,
+            port,
             mode: _mode,
         })
     }
