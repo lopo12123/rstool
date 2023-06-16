@@ -1,6 +1,6 @@
 # rstool - a cli tools written in rust
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/lopo12123/rstool)](https://github.com/lopo12123/rstool/releases/tag/v0.1.0)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/lopo12123/rstool)](https://github.com/lopo12123/rstool/releases/latest)
 ![OS](https://img.shields.io/badge/os-windows-orange)
 ![License](https://img.shields.io/github/license/lopo12123/rstool)
 
@@ -14,7 +14,7 @@ The following are the prerequisites for using `rstool`
 
 ### Installation
 
-Get [`rstool.exe`](https://github.com/lopo12123/rstool/releases/tag/v0.1.0) from the release page.  
+Get [`rstool.exe`](https://github.com/lopo12123/rstool/releases/latest) from the release page.  
 You can also clone this project directly if you want to build or modify it yourself.
 
 I recommend that you add the path of `rstool.exe` to the environment variable after downloading.
@@ -42,4 +42,4 @@ see at [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-Last update time: 2023-06-15
+Last update time: 2023-06-16
