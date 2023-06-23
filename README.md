@@ -43,6 +43,16 @@ Options:
 
 see at [CHANGELOG.md](./CHANGELOG.md)
 
+### TODO
+
+I tried my best to make this tool cross-platform (although I don't have a test environment other than windows). When all
+platform specific dependencies are optimized I add github actions to automate the build process.
+
+The following are current windows-specific commands (for example, tools such as cmd are used)
+
+- [ ] `rstool hash` (`certutil` used)
+- [ ] `rstool serve` (`ipconfig` used)
+
 ---
 
-Last update time: 2023-06-15
+Last update time: 2023-06-23
