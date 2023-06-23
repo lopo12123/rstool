@@ -65,7 +65,7 @@ impl HashImpl {
     /// 如果目标不存在或非文件则抛出错误
     fn hash(filepath: &str, algorithm_name: &str) -> Result<String, String> {
         if !Utils::check_file(filepath) {
-            return Err(format!("file does not exist, or is not a file"));
+            return Err(format!("File does not exist, or is not a file"));
         }
         match Algorithm::from_name(algorithm_name) {
             Some(algorithm) => match Command::new("certutil")

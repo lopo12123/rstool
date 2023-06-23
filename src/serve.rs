@@ -31,16 +31,16 @@ impl ServerBuilder {
         let path_root = PathBuf::from(root);
 
         if !path_root.exists() {
-            Err(format!("invalid root (root does not exist)"))
+            Err(format!("Invalid root (root does not exist)"))
         } else if !path_root.is_dir() {
-            Err(format!("invalid root (root is not a directory)"))
+            Err(format!("Invalid root (root is not a directory)"))
         } else {
             if path_root.is_absolute() {
                 Ok(path_root.canonicalize().unwrap())
             } else {
                 match current_dir() {
                     Ok(curr) => Ok(curr.join(path_root).canonicalize().unwrap()),
-                    Err(_) => Err(format!("unable to resolve the absolute path of the current location"))
+                    Err(_) => Err(format!("Unable to resolve the absolute path of the current location"))
                 }
             }
         }
@@ -51,29 +51,20 @@ impl ServerBuilder {
         let path_entry = root.join(entry);
 
         if !path_entry.exists() {
-            Err(format!("invalid entry (entry does not exist)"))
+            Err(format!("Invalid entry (entry does not exist)"))
         } else if !path_entry.is_file() {
-            Err(format!("invalid entry (entry is not a file)"))
+            Err(format!("Invalid entry (entry is not a file)"))
         } else {
             if path_entry.is_absolute() {
                 Ok(path_entry.canonicalize().unwrap())
             } else {
                 match current_dir() {
                     Ok(curr) => Ok(curr.join(path_entry).canonicalize().unwrap()),
-                    Err(_) => Err(format!("unable to resolve the absolute path of the entry file"))
+                    Err(_) => Err(format!("Unable to resolve the absolute path of the entry file"))
                 }
             }
         }
     }
-
-    // port: 1024 ~ 65535
-    // fn get_port(port: u16) -> Result<u16, String> {
-    //     if port < 1024 {
-    //         Err(format!("invalid port (required: 1024 ~ 65535, received: {port})"))
-    //     } else {
-    //         Ok(port)
-    //     }
-    // }
 
     /// mode: 'single' | 'mixed' | 'direct'
     fn get_mode(mode: &str) -> Result<ServerMode, String> {
@@ -81,7 +72,7 @@ impl ServerBuilder {
             "single" => Ok(ServerMode::Single),
             "mixed" => Ok(ServerMode::Mixed),
             "direct" => Ok(ServerMode::Direct),
-            _ => Err(format!("invalid mode (required: 'single' / 'mixed' / 'direct', received: {mode})"))
+            _ => Err(format!("Invalid mode (required: 'single' / 'mixed' / 'direct', received: {mode})"))
         }
     }
     // endregion
