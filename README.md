@@ -4,6 +4,9 @@
 ![OS](https://img.shields.io/badge/os-windows-orange)
 ![License](https://img.shields.io/github/license/lopo12123/rstool)
 
+Notice! In general this tool is only guaranteed to work on windows. Unless otherwise specified, you can compile and use
+it yourself in the mac/linux environment (because I don't have these environments for testing)
+
 ### Requirements
 
 The following are the prerequisites for using `rstool`

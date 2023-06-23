@@ -1,3 +1,7 @@
+### v0.1.1 - 2023.06.15
+
+- Remove strict restrictions on ports
+
 ### v0.1.0 - 2023.06.15
 
 ```
@@ -13,7 +17,3 @@ Options:
   -h, --help     Print help
   -V, --version  Print version
   ```
-
-### v0.1.1 - 2023.06.15
-
-- Remove strict restrictions on ports
