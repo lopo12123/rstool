@@ -44,7 +44,17 @@ pub enum Commands {
         /// Port (1024 ~ 65535), default to '8000'
         #[arg(short, long, help = "Port (1024 ~ 65535)\n", default_value = "8000")]
         port: u16,
-        #[arg(short, long, help = format ! ("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
+        #[arg(short, long, help = format!("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
         mode: String,
+    },
+    /// A tool that generates a character-specific subset for a font file and can also view the font file's metadata.
+    #[command(about = "A tool that generates a character-specific subset for a font file and can also view the font file's metadata.")]
+    FontMin {
+        #[arg(short, long, help = "Font file input")]
+        input: String,
+        #[arg(short, long, help = "Font file output, default to <[input]_subset.[suffix]>")]
+        output: Option<String>,
+        #[arg(short, long, help = "The name of the text file containing the Unicode character set to extract.\nIf not specified, the command will only output the metadata of the font file without subsetting.")]
+        chars: Option<String>,
     },
 }
