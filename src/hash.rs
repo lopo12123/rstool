@@ -1,6 +1,7 @@
 use std::fs;
 use std::process::Command;
 use regex::Regex;
+use crate::utils::Utils;
 
 pub enum Algorithm {
     Md5,
@@ -59,19 +60,11 @@ impl Algorithm {
 pub struct HashImpl {}
 
 impl HashImpl {
-    /// 检查目标是否存在且是文件
-    fn check(filepath: &str) -> bool {
-        match fs::metadata(&filepath) {
-            Ok(meta) => meta.is_file(),
-            Err(_) => false
-        }
-    }
-
     /// 获取目标文件的哈希
     ///
     /// 如果目标不存在或非文件则抛出错误
     fn hash(filepath: &str, algorithm_name: &str) -> Result<String, String> {
-        if !Self::check(filepath) {
+        if !Utils::check_file(filepath) {
             return Err(format!("file does not exist, or is not a file"));
         }
         match Algorithm::from_name(algorithm_name) {

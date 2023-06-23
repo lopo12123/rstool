@@ -8,6 +8,8 @@ mod hash;
 mod commands;
 mod doctor;
 mod serve;
+mod fontmin;
+mod utils;
 
 fn main() {
     let cmd = Cli::parse().command;
