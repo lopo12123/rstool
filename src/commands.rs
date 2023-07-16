@@ -22,14 +22,17 @@ pub enum Commands {
         #[arg(short, long, help = "Target browser, supported values are: 'Firefox', 'IE' (or 'Internet Explorer', 'InternetExplorer'), 'Chrome', 'Opera', 'Safari', 'Default', case insensitive), the default is the system default browser.")]
         browser: Option<String>
     },
-    /// Get the specified hash value of the target file
-    #[command(about = "Get the specified hash value of the target file")]
+    /// Get the digest of the specified source
+    #[command(about = "Get the digest of the specified source")]
     Hash {
         /// Path to the target file
-        #[arg(help = "Path to the target file")]
-        file: String,
-        /// The hash algorithm used, supports 'md5', 'sha1', 'sha256', and 'sha512' (case insensitive)
-        #[arg(help = "The hash algorithm used, supports 'md5', 'sha1', 'sha256', and 'sha512' (case insensitive)")]
+        #[arg(help = "Source text or source file path (with -f flag) to be evaluated ")]
+        source: String,
+        /// Whether to treat source as a file path rather than a raw string (default to 'false')
+        #[arg(shoet, long, help = "Whether to treat source as a file path rather than a raw string (default to 'false')", default_value = "false")]
+        filemode: bool,
+        /// The hash algorithm used, supports 'md5' (default), 'sha1', 'sha256', and 'sha512' (case insensitive)
+        #[arg(short, long, help = "The hash algorithm used, supports 'md5' (default), 'sha1', 'sha256', and 'sha512' (case insensitive)", default_value = "md5")]
         algorithm: String,
     },
     /// Start a static resource server in the specified directory
@@ -41,8 +44,8 @@ pub enum Commands {
         /// Entry file, default to 'index.html'
         #[arg(short, long, help = "Entry file\n", default_value = "index.html")]
         entry: String,
-        /// Port (1024 ~ 65535), default to '8000'
-        #[arg(short, long, help = "Port (1024 ~ 65535)\n", default_value = "8000")]
+        /// Port (0 ~ 65535), default to '8000'
+        #[arg(short, long, help = "Port (0 ~ 65535)\n", default_value = "8000")]
         port: u16,
         #[arg(short, long, help = format!("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
         mode: String,

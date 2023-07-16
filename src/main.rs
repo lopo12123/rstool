@@ -5,9 +5,9 @@ use crate::fontmin::FontMinImpl;
 use crate::hash::HashImpl;
 use crate::serve::ServeImpl;
 
-mod hash;
 mod commands;
 mod doc;
+mod hash;
 mod serve;
 mod fontmin;
 mod utils;
@@ -17,7 +17,9 @@ fn main() {
 
     match cmd {
         Commands::Doc { browser } => DocImpl::handle(browser),
-        Commands::Hash { file, algorithm } => HashImpl::handle(file, algorithm),
+        Commands::Hash { source, filemode, algorithm } => {
+            HashImpl::handle(source, filemode, algorithm);
+        },
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);
         }

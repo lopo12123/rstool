@@ -22,9 +22,9 @@ impl DocImpl {
         }
     }
 
-    /// 处理 Command::Doctor 子命令
+    /// 处理 Command::Doc 子命令
     pub fn handle(_browser: Option<String>) {
-        println!("[Commands::Doctor]");
+        println!("[Commands::Doc]");
 
         match DocImpl::open_doc(_browser) {
             Ok(_) => println!("Ok"),
