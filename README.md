@@ -4,16 +4,7 @@
 ![OS](https://img.shields.io/badge/os-windows-orange)
 ![License](https://img.shields.io/github/license/lopo12123/rstool)
 
-Notice! In general this tool is only guaranteed to work on windows. Unless otherwise specified, you can compile and use
-it yourself in the mac/linux environment (because I don't have these environments for testing)
-
-### Requirements
-
-The following are the prerequisites for using `rstool`
-
-- **OS**: `windows` only.
-- **Environment**: `cmd.exe` must exist in the system environment variables and be accessible. (No additional settings
-  are necessary as this is the default)
+A collection of simple and commonly used tools, available on windows, will soon support wasm (partially)
 
 ### Installation
 
@@ -39,10 +30,19 @@ Options:
   -V, --version  Print version
 ```
 
+### Support
+
+| command | windows | web(via wasm) |
+|---------|---------|---------------|
+| `Doc`   | ✅       | ❌             |
+| `Hash`  | ✅       | ❌             |
+| `Serve` | ✅       | ❌             |
+| ...     | ...     | ...           |
+
 ### CHANGELOG
 
 see at [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-Last update time: 2023-07-12
+Last modified on **2023-07-16**

@@ -21,7 +21,7 @@ fn main() {
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);
         }
-        Commands::FontMin { input, output, chars } => FontMinImpl::handle(input, output, chars),
-        // _ => println!("Not yet implemented!")
+        // Commands::FontMin { input, output, chars } => FontMinImpl::handle(input, output, chars),
+        _ => println!("Not yet implemented!")
     }
 }
