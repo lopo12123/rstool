@@ -1,11 +1,20 @@
-use sha2::{Sha256, Digest};
-use sha2::digest::{FixedOutput, Output};
+use sha2::{Sha256, Digest, Sha512};
+use crate::hash::utils::hash_bytes;
 
-pub fn sha256_str(source: String) {
-    let mut hasher = Sha256::default();
-    hasher.update(source.as_bytes());
-    let result = hasher.finalize_fixed();
-    println!("{:?}", result);
+pub fn sha256_bytes(bytes: &[u8]) -> String {
+    hash_bytes::<Sha256>(bytes)
+}
+
+pub fn sha256_str(source: String) -> String {
+    sha256_bytes(source.as_bytes())
+}
+
+pub fn sha512_bytes(bytes: &[u8]) -> String {
+    hash_bytes::<Sha512>(bytes)
+}
+
+pub fn sha512_str(source: String) -> String {
+    sha512_bytes(source.as_bytes())
 }
 
 #[cfg(test)]
@@ -15,12 +24,9 @@ mod unit_test {
 
     #[test]
     fn tt() {
-        sha256_str("hello world".to_string());
-    }
-
-    #[test]
-    fn trans() {
-        let bytes: Vec<u8> = vec![185, 77, 39, 185, 147, 77, 62, 8, 165, 46, 82, 215, 218, 125, 171, 250, 196, 132, 239, 227, 122, 83, 128, 238, 144, 136, 247, 172, 226, 239, 205, 233];
-
+        // let r = sha256_str("hello world".to_string());
+        let r = hash_bytes::<Sha256>(b"hello world");
+        // let r = sha512_str("hello world".to_string());
+        println!("r: {}", r);
     }
 }

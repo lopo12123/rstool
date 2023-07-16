@@ -1,9 +1,24 @@
+use sha2::Digest;
+
 mod md5;
 mod sha;
 
-use std::fs;
-use crate::utils::Utils;
+/// 通用hash函数
+fn hash_bytes<Hasher: Digest>(bytes: &[u8]) -> String {
+    let hex_bytes = Hasher::digest(bytes);
+    let mut result = String::new();
+    for byte in hex_bytes {
+        result += &format!("{:x}", byte);
+    }
+    result
+}
 
+/// Supported digest algorithms:
+/// - md5
+/// - ripemd (Ripemd128; Ripemd160; Ripemd256; Ripemd320)
+/// - sha1
+/// - sha2 (SHA224; SHA256; SHA384; SHA512; SHA512_224; SHA512_256)
+/// - sha3 (SHA3_224; SHA3_256; SHA3_384; SHA3_512)
 pub struct HashImpl {}
 
 impl HashImpl {
