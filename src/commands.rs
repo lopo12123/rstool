@@ -29,7 +29,7 @@ pub enum Commands {
         #[arg(help = "Source text or source file path (with -f flag) to be evaluated ")]
         source: String,
         /// Whether to treat source as a file path rather than a raw string (default to 'false')
-        #[arg(shoet, long, help = "Whether to treat source as a file path rather than a raw string (default to 'false')", default_value = "false")]
+        #[arg(short, long, help = "Whether to treat source as a file path rather than a raw string (default to 'false')", default_value = "false")]
         filemode: bool,
         /// The hash algorithm used, supports 'md5' (default), 'sha1', 'sha256', and 'sha512' (case insensitive)
         #[arg(short, long, help = "The hash algorithm used, supports 'md5' (default), 'sha1', 'sha256', and 'sha512' (case insensitive)", default_value = "md5")]

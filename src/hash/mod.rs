@@ -1,3 +1,6 @@
+mod md5;
+mod sha;
+
 use std::fs;
 use crate::utils::Utils;
 

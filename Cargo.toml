@@ -14,8 +14,7 @@ clap = { version = "4.0.26", features = ["derive"] }
 # Commands::Doc
 webbrowser = "0.8.10"
 # Commands::Hash
-crypto = "0.5.1"
-regex = "1.7.0"
+sha2 = "0.10.7"
 # Commands::Serve
 ipconfig = "0.3.1"
 rocket = "0.5.0-rc.2"
