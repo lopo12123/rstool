@@ -16,11 +16,11 @@ pub struct Cli {
 /// All supported command
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-    /// Say hello to you
-    #[command(about = "Check the version, availability, and other information of this tool")]
-    Doctor {
-        #[arg(short, long, help = "Whether to output complete information")]
-        verbose: bool
+    /// Open the document in the browser (default or specified)
+    #[command(about = "Open the document in the browser (default or specified)")]
+    Doc {
+        #[arg(short, long, help = "Target browser, supported values are: 'Firefox', 'IE' (or 'Internet Explorer', 'InternetExplorer'), 'Chrome', 'Opera', 'Safari', 'Default', case insensitive), the default is the system default browser.")]
+        browser: Option<String>
     },
     /// Get the specified hash value of the target file
     #[command(about = "Get the specified hash value of the target file")]

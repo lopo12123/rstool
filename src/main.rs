@@ -1,13 +1,13 @@
 use clap::Parser;
 use crate::commands::{Cli, Commands};
-use crate::doctor::DoctorImpl;
+use crate::doc::DocImpl;
 use crate::fontmin::FontMinImpl;
 use crate::hash::HashImpl;
 use crate::serve::ServeImpl;
 
 mod hash;
 mod commands;
-mod doctor;
+mod doc;
 mod serve;
 mod fontmin;
 mod utils;
@@ -16,7 +16,7 @@ fn main() {
     let cmd = Cli::parse().command;
 
     match cmd {
-        Commands::Doctor { verbose } => DoctorImpl::handle(verbose),
+        Commands::Doc { browser } => DocImpl::handle(browser),
         Commands::Hash { file, algorithm } => HashImpl::handle(file, algorithm),
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);
