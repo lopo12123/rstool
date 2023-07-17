@@ -17,17 +17,17 @@ so that it can be used directly in any directory.
 ### Usage
 
 ```
-Usage: rstool <COMMAND>
-
-Commands:
-  doctor  Check the version, availability, and other information of this tool
-  hash    Get the specified hash value of the target file
-  serve   Start a static resource server in the specified directory
-  help    Print this message or the help of the given subcommand(s)
-
-Options:
-  -h, --help     Print help
-  -V, --version  Print version
+Usage: rstool.exe <COMMAND>                                       
+                                                                  
+Commands:                                                         
+  doc    Open the document in the browser (default or specified)  
+  hash   Get the digest of the specified source                   
+  serve  Start a static resource server in the specified directory
+  help   Print this message or the help of the given subcommand(s)
+                                                                  
+Options:                                                          
+  -h, --help     Print help                                       
+  -V, --version  Print version  
 ```
 
 ### Support
@@ -45,4 +45,4 @@ see at [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-Last modified on **2023-07-16**
+Last modified on **2023-07-17**

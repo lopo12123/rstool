@@ -26,13 +26,13 @@ pub enum Commands {
     #[command(about = "Get the digest of the specified source")]
     Hash {
         /// Path to the target file
-        #[arg(help = "Source text or source file path (with -f flag) to be evaluated ")]
+        #[arg(help = "Source text or source file path (with 'filemode' true) to be evaluated ")]
         source: String,
         /// Whether to treat source as a file path rather than a raw string (default to 'false')
         #[arg(short, long, help = "Whether to treat source as a file path rather than a raw string (default to 'false')", default_value = "false")]
         filemode: bool,
-        /// The hash algorithm used, supports 'md5' (default), 'sha1', 'sha256', and 'sha512' (case insensitive)
-        #[arg(short, long, help = "The hash algorithm used, supports 'md5' (default), 'sha1', 'sha256', and 'sha512' (case insensitive)", default_value = "md5")]
+        /// The hash algorithm used
+        #[arg(short, long, help = "Supported algorithms (case insensitive):\n- md5 (MD5)\n- ripemd (Ripemd128; Ripemd160; Ripemd256; Ripemd320)\n- sha1 (SHA1)\n- sha2 (SHA224; SHA256; SHA384; SHA512; SHA512_224; SHA512_256)\n- sha3 (SHA3_224; SHA3_256; SHA3_384; SHA3_512)\n", default_value = "MD5")]
         algorithm: String,
     },
     /// Start a static resource server in the specified directory
@@ -47,17 +47,18 @@ pub enum Commands {
         /// Port (0 ~ 65535), default to '8000'
         #[arg(short, long, help = "Port (0 ~ 65535)\n", default_value = "8000")]
         port: u16,
+        /// Server mode
         #[arg(short, long, help = format!("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
         mode: String,
     },
-    /// A tool that generates a character-specific subset for a font file and can also view the font file's metadata.
-    #[command(about = "A tool that generates a character-specific subset for a font file and can also view the font file's metadata.")]
-    FontMin {
-        #[arg(short, long, help = "Font file input")]
-        input: String,
-        #[arg(short, long, help = "Font file output, default to <[input]_subset.[suffix]>")]
-        output: Option<String>,
-        #[arg(short, long, help = "The name of the text file containing the Unicode character set to extract.\nIf not specified, the command will only output the metadata of the font file without subsetting.")]
-        chars: Option<String>,
-    },
+    // A tool that generates a character-specific subset for a font file and can also view the font file's metadata.
+    // #[command(about = "A tool that generates a character-specific subset for a font file and can also view the font file's metadata.")]
+    // FontMin {
+    //     #[arg(short, long, help = "Font file input")]
+    //     input: String,
+    //     #[arg(short, long, help = "Font file output, default to <[input]_subset.[suffix]>")]
+    //     output: Option<String>,
+    //     #[arg(short, long, help = "The name of the text file containing the Unicode character set to extract.\nIf not specified, the command will only output the metadata of the font file without subsetting.")]
+    //     chars: Option<String>,
+    // },
 }

@@ -38,10 +38,10 @@ fn algorithm_to_hasher(algorithm: &str) -> Option<Box<fn(&[u8]) -> String>> {
     }
 }
 
-/// Supported digest algorithms:
-/// - md5
+/// Supported algorithms (case insensitive):
+/// - md5 (MD5) -- default
 /// - ripemd (Ripemd128; Ripemd160; Ripemd256; Ripemd320)
-/// - sha1
+/// - sha1 (SHA1)
 /// - sha2 (SHA224; SHA256; SHA384; SHA512; SHA512_224; SHA512_256)
 /// - sha3 (SHA3_224; SHA3_256; SHA3_384; SHA3_512)
 pub struct HashImpl {}
