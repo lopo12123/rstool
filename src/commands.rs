@@ -20,7 +20,16 @@ pub enum Commands {
     #[command(about = "Open the document in the browser (default or specified)")]
     Doc {
         #[arg(short, long, help = "Target browser, supported values are: 'Firefox', 'IE' (or 'Internet Explorer', 'InternetExplorer'), 'Chrome', 'Opera', 'Safari', 'Default', case insensitive), the default is the system default browser.")]
-        browser: Option<String>
+        browser: Option<String>,
+    },
+    #[command(about = "Extract compressed or archived files")]
+    Extract {
+        #[arg(short, long, help = "The path where the compressed file or archive is located (points to a file)")]
+        source: String,
+        #[arg(short, long, help = "The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically)")]
+        target: String,
+        #[arg(short, long, help = "The format of the compressed or archived file, if omitted it will be automatically inferred from the file suffix. (Supported values are: 'zip', 'rar', '7z', 'tar', 'tgz'/'tar.gz' (case insensitive))")]
+        format: Option<String>,
     },
     /// Get the digest of the specified source
     #[command(about = "Get the digest of the specified source")]

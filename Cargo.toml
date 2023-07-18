@@ -13,6 +13,10 @@ clap = { version = "4.0.26", features = ["derive"] }
 
 # Commands::Doc
 webbrowser = "0.8.10"
+# Commands::Extract
+flate2 = "1.0.26"
+tar = "0.4.39"
+zip-extract = "0.1.2"
 # Commands::Hash
 md-5 = "0.10.5"
 ripemd = "0.1.3"
