@@ -1,6 +1,3 @@
-use std::str::FromStr;
-use webbrowser::Browser;
-
 pub struct DocImpl {}
 
 impl DocImpl {

@@ -2,7 +2,6 @@ use clap::Parser;
 use crate::commands::{Cli, Commands};
 use crate::doc::DocImpl;
 use crate::extract::ExtractImpl;
-use crate::fontmin::FontMinImpl;
 use crate::hash::HashImpl;
 use crate::serve::ServeImpl;
 
@@ -30,6 +29,6 @@ fn main() {
             ExtractImpl::handle(source, target, format);
         }
         // Commands::FontMin { input, output, chars } => FontMinImpl::handle(input, output, chars),
-        _ => println!("Not yet implemented!")
+        // _ => println!("Not yet implemented!")
     }
 }

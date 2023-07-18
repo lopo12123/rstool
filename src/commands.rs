@@ -26,9 +26,9 @@ pub enum Commands {
     Extract {
         #[arg(short, long, help = "The path where the compressed file or archive is located (points to a file)")]
         source: String,
-        #[arg(short, long, help = "The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically)")]
+        #[arg(short, long, help = "The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically)", default_value = ".")]
         target: String,
-        #[arg(short, long, help = "The format of the compressed or archived file, if omitted it will be automatically inferred from the file suffix. (Supported values are: 'zip', 'rar', '7z', 'tar', 'tgz'/'tar.gz' (case insensitive))")]
+        #[arg(short, long, help = "The format of the compressed or archived file, if omitted it will be automatically inferred from the file suffix. (Supported values are: 'zip', 'rar', '7z', 'tar', 'tgz'/'tar.gz', case insensitive)")]
         format: Option<String>,
     },
     /// Get the digest of the specified source
