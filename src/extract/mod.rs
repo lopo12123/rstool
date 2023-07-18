@@ -3,16 +3,15 @@ use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
 
-mod zip;
-mod tgz;
 mod rar;
 mod sevenz;
+mod tgz;
+mod zip;
 
 type Extractor = fn(buffer: Vec<u8>, dest: &Path) -> Result<(), String>;
 
 pub struct ExtractImpl {}
 
-// 'zip', 'rar', '7z', 'tar', 'tgz'/'tar.gz'
 impl ExtractImpl {
     fn ensured_path(target: String) -> Result<PathBuf, String> {
         let path = PathBuf::from(target);
@@ -29,9 +28,11 @@ impl ExtractImpl {
     fn extract(format: &str, buffer: Vec<u8>, destination: String) -> Result<(), String> {
         let extractor: Option<Extractor> = match format {
             "zip" => Some(zip::extract_zip),
+            "tar" => Some(tgz::extract_tar),
+            "gz" => Some(tgz::extract_gz),
             "tgz" | "tar.gz" => Some(tgz::extract_tgz),
+            "7z" | "7zip" => Some(sevenz::extract_sevenz),
             "rar" => Some(rar::extract_rar),
-            "7z" => Some(sevenz::extract_sevenz),
             _ => None,
         };
 
