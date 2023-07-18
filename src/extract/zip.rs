@@ -1,5 +1,5 @@
 use std::io::Cursor;
-use std::path::{Path};
+use std::path::Path;
 
 pub fn extract_zip(zip_buffer: Vec<u8>, dest: &Path) -> Result<(), String> {
     match zip_extract::extract(

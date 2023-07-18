@@ -5,6 +5,8 @@ use std::path::{Path, PathBuf};
 
 mod zip;
 mod tgz;
+mod rar;
+mod sevenz;
 
 type Extractor = fn(buffer: Vec<u8>, dest: &Path) -> Result<(), String>;
 
@@ -28,6 +30,8 @@ impl ExtractImpl {
         let extractor: Option<Extractor> = match format {
             "zip" => Some(zip::extract_zip),
             "tgz" | "tar.gz" => Some(tgz::extract_tgz),
+            "rar" => Some(rar::extract_rar),
+            "7z" => Some(sevenz::extract_sevenz),
             _ => None,
         };
 
