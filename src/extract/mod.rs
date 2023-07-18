@@ -1,9 +1,12 @@
 use std::fs;
 use std::fs::File;
 use std::io::Read;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 mod zip;
+mod tgz;
+
+type Extractor = fn(buffer: Vec<u8>, dest: &Path) -> Result<(), String>;
 
 pub struct ExtractImpl {}
 
@@ -22,12 +25,15 @@ impl ExtractImpl {
     }
 
     fn extract(format: &str, buffer: Vec<u8>, destination: String) -> Result<(), String> {
-        match match format {
+        let extractor: Option<Extractor> = match format {
             "zip" => Some(zip::extract_zip),
+            "tgz" | "tar.gz" => Some(tgz::extract_tgz),
             _ => None,
-        } {
-            Some(handler) => match ExtractImpl::ensured_path(destination) {
-                Ok(dest) => handler(buffer, &dest),
+        };
+
+        match extractor {
+            Some(worker) => match ExtractImpl::ensured_path(destination) {
+                Ok(dest) => worker(buffer, &dest),
                 Err(err) => Err(err),
             }
             None => Err(format!("Invalid format"))
