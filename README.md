@@ -1,7 +1,9 @@
 # rstool - a cli tools written in rust
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/lopo12123/rstool)](https://github.com/lopo12123/rstool/releases/latest)
-![OS](https://img.shields.io/badge/os-windows-orange)
+![cli](https://img.shields.io/badge/cli-supported-green)
+![node-addon](https://img.shields.io/badge/node--addon-in--progress-yellow)
+![cli](https://img.shields.io/badge/wasm-in--progress-yellow)
 ![License](https://img.shields.io/github/license/lopo12123/rstool)
 
 A collection of simple and commonly used tools, available on windows, will soon support node-addon and wasm
