@@ -4,7 +4,7 @@
 ![OS](https://img.shields.io/badge/os-windows-orange)
 ![License](https://img.shields.io/github/license/lopo12123/rstool)
 
-A collection of simple and commonly used tools, available on windows, will soon support wasm (partially)
+A collection of simple and commonly used tools, available on windows, will soon support node-addon and wasm
 
 ### Installation
 
