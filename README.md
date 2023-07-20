@@ -40,7 +40,7 @@ Options:
 | `Serve`   | ✅   | ⏳           | ⏳          | [Commands::serve](./src/serve/README.md)     |
 | ...       | ... | ...         | ...        ||
 
-- ✅ - **supported** (done)
+- ✅ - **supported**
 - ➖ - **partially supported**
 - ❌ - **not supported**
 - ⏳ - **in progress**
