@@ -32,16 +32,18 @@ Options:
 
 ### Support Matrix
 
-| command | cli | wasm (node) | wasm (web) |
-|---------|-----|-------------|------------|
-| `Doc`   | ✅   | ❌           | ❌          |
-| `Hash`  | ✅   | ➖           | ➖          | 
-| `Serve` | ✅   | ➖           | ➖          |
-| ...     | ... | ...         | ...        |
+| command   | cli | wasm (node) | wasm (web) | details                                      |
+|-----------|-----|-------------|------------|----------------------------------------------|
+| `Doc`     | ✅   | ⏳           | ⏳          |                                              |
+| `Extract` | ✅   | ⏳           | ⏳          | [Commands::extract](./src/extract/README.md) |
+| `Hash`    | ✅   | ⏳           | ⏳          |                                              |
+| `Serve`   | ✅   | ⏳           | ⏳          ||
+| ...       | ... | ...         | ...        ||
 
 - ✅ - **supported** (done)
-- ➖ - **partially supported** (in progress)
-- ❌ - **not supported** (now or in the future)
+- ➖ - **partially supported**
+- ❌ - **not supported**
+- ⏳ - **in progress**
 
 ### CHANGELOG
 
@@ -49,4 +51,4 @@ see at [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-Last modified on **2023-07-17**
+Last modified on **2023-07-20**
