@@ -27,12 +27,12 @@ impl ExtractImpl {
 
     fn extract(format: &str, buffer: Vec<u8>, destination: String) -> Result<(), String> {
         let extractor: Option<Extractor> = match format {
-            "zip" => Some(zip::extract_zip),
-            "tar" => Some(tgz::extract_tar),
+            "7z" => Some(sevenz::extract_sevenz),
             "gz" => Some(tgz::extract_gz),
+            // "rar" => Some(rar::extract_rar),
+            "tar" => Some(tgz::extract_tar),
             "tgz" | "tar.gz" => Some(tgz::extract_tgz),
-            "7z" | "7zip" => Some(sevenz::extract_sevenz),
-            "rar" => Some(rar::extract_rar),
+            "zip" => Some(zip::extract_zip),
             _ => None,
         };
 
@@ -46,6 +46,8 @@ impl ExtractImpl {
     }
 
     pub fn handle(source: String, target: String, format: Option<String>) {
+        println!("[Commands::Serve] source: '{source}' target: '{target}', format: '{format:?}'");
+
         let format = format.unwrap_or(source.split(".").last().unwrap_or("").to_string());
         match File::open(source) {
             Ok(mut file) => {
