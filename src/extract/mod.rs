@@ -46,9 +46,9 @@ impl ExtractImpl {
     }
 
     pub fn handle(source: String, target: String, format: Option<String>) {
+        let format = format.unwrap_or(source.split(".").last().unwrap_or("").to_string());
         println!("[Commands::Serve] source: '{source}' target: '{target}', format: '{format:?}'");
 
-        let format = format.unwrap_or(source.split(".").last().unwrap_or("").to_string());
         match File::open(source) {
             Ok(mut file) => {
                 let mut bytes = vec![];
