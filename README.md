@@ -30,14 +30,18 @@ Options:
   -V, --version  Print version  
 ```
 
-### Support
+### Support Matrix
 
-| command | windows | web(via wasm) |
-|---------|---------|---------------|
-| `Doc`   | ✅       | ❌             |
-| `Hash`  | ✅       | ❌             |
-| `Serve` | ✅       | ❌             |
-| ...     | ...     | ...           |
+| command | cli | wasm (node) | wasm (web) |
+|---------|-----|-------------|------------|
+| `Doc`   | ✅   | ❌           | ❌          |
+| `Hash`  | ✅   | ➖           | ➖          | 
+| `Serve` | ✅   | ➖           | ➖          |
+| ...     | ... | ...         | ...        |
+
+- ✅ - **supported** (done)
+- ➖ - **partially supported** (in progress)
+- ❌ - **not supported** (now or in the future)
 
 ### CHANGELOG
 
