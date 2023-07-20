@@ -1,5 +1,5 @@
 use clap::Parser;
-use crate::commands::{Cli, Commands, ImageCommands};
+use crate::commands::{Cli, Commands};
 use crate::doc::DocImpl;
 use crate::extract::ExtractImpl;
 use crate::hash::HashImpl;
