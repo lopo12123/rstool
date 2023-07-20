@@ -16,12 +16,9 @@ pub struct Cli {
 /// All supported command
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-    /// Open the document in the browser (default or specified)
-    #[command(about = "Open the document in the browser (default or specified)")]
-    Doc {
-        #[arg(short, long, help = "Target browser, supported values are: 'Firefox', 'IE' (or 'Internet Explorer', 'InternetExplorer'), 'Chrome', 'Opera', 'Safari', 'Default', case insensitive), the default is the system default browser.")]
-        browser: Option<String>,
-    },
+    /// Open the document in the default browser
+    #[command(about = "Open the document in the default browser")]
+    Doc,
     #[command(about = "Extract compressed or archived files")]
     Extract {
         #[arg(short, long, help = "The path where the compressed file or archive is located (points to a file)")]

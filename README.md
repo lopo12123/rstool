@@ -34,7 +34,7 @@ Options:
 
 | command   | cli | wasm (node) | wasm (web) | details                                      |
 |-----------|-----|-------------|------------|----------------------------------------------|
-| `Doc`     | ✅   | ⏳           | ⏳          |                                              |
+| `Doc`     | ✅   | ⏳           | ⏳          | [Commands::doc](./src/doc/README.md)         |
 | `Extract` | ✅   | ⏳           | ⏳          | [Commands::extract](./src/extract/README.md) |
 | `Hash`    | ✅   | ⏳           | ⏳          |                                              |
 | `Serve`   | ✅   | ⏳           | ⏳          ||

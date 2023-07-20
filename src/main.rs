@@ -16,8 +16,8 @@ fn main() {
     let cmd = Cli::parse().command;
 
     match cmd {
-        Commands::Doc { browser } => {
-            DocImpl::handle(browser);
+        Commands::Doc => {
+            DocImpl::handle();
         }
         Commands::Hash { source, filemode, algorithm } => {
             HashImpl::handle(source, filemode, algorithm);
