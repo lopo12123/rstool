@@ -32,13 +32,13 @@ Options:
 
 ### Support Matrix
 
-| command   | cli | wasm (node) | wasm (web) | details                                      |
-|-----------|-----|-------------|------------|----------------------------------------------|
-| `Doc`     | ✅   | ⏳           | ⏳          | [Commands::doc](./src/doc/README.md)         |
-| `Extract` | ✅   | ⏳           | ⏳          | [Commands::extract](./src/extract/README.md) |
-| `Hash`    | ✅   | ⏳           | ⏳          | [Commands::hash](./src/hash/README.md)       |
-| `Serve`   | ✅   | ⏳           | ⏳          | [Commands::serve](./src/serve/README.md)     |
-| ...       | ... | ...         | ...        ||
+| command   | cli | node-addon | wasm | details                                      |
+|-----------|-----|------------|------|----------------------------------------------|
+| `Doc`     | ✅   | ⏳          | ⏳    | [Commands::doc](./src/doc/README.md)         |
+| `Extract` | ✅   | ⏳          | ⏳    | [Commands::extract](./src/extract/README.md) |
+| `Hash`    | ✅   | ⏳          | ⏳    | [Commands::hash](./src/hash/README.md)       |
+| `Serve`   | ✅   | ⏳          | ⏳    | [Commands::serve](./src/serve/README.md)     |
+| ...       | ... | ...        | ...  ||
 
 - ✅ - **supported**
 - ➖ - **partially supported**
