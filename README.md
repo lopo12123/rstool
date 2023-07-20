@@ -36,7 +36,7 @@ Options:
 |-----------|-----|-------------|------------|----------------------------------------------|
 | `Doc`     | ✅   | ⏳           | ⏳          | [Commands::doc](./src/doc/README.md)         |
 | `Extract` | ✅   | ⏳           | ⏳          | [Commands::extract](./src/extract/README.md) |
-| `Hash`    | ✅   | ⏳           | ⏳          |                                              |
+| `Hash`    | ✅   | ⏳           | ⏳          | [Commands::hash](./src/hash/README.md)       |
 | `Serve`   | ✅   | ⏳           | ⏳          ||
 | ...       | ... | ...         | ...        ||
 

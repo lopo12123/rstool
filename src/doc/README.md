@@ -4,6 +4,7 @@
 
 ```
 $rstool.exe doc --help
+
 Open the document in the default browser
 
 Usage: rstool.exe doc
