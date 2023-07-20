@@ -38,8 +38,22 @@ pub enum Commands {
         #[arg(short, long, help = "Whether to treat source as a file path rather than a raw string (default to 'false')", default_value = "false")]
         filemode: bool,
         /// The hash algorithm used
-        #[arg(short, long, help = "Supported algorithms (case insensitive):\n- md5 (MD5)\n- ripemd (Ripemd128; Ripemd160; Ripemd256; Ripemd320)\n- sha1 (SHA1)\n- sha2 (SHA224; SHA256; SHA384; SHA512; SHA512_224; SHA512_256)\n- sha3 (SHA3_224; SHA3_256; SHA3_384; SHA3_512)\n", default_value = "MD5")]
+        #[arg(short, long, help = "Supported algorithms (case insensitive):\n- md5 (MD5)\n- ripemd (Ripemd128, Ripemd160, Ripemd256, Ripemd320)\n- sha1 (SHA1)\n- sha2 (SHA224, SHA256, SHA384, SHA512, SHA512_224, SHA512_256)\n- sha3 (SHA3_224, SHA3_256, SHA3_384, SHA3_512)\n", default_value = "MD5")]
         algorithm: String,
+    },
+    /// Convert the specified image to the specified format and/or size (simple show the metadata of the image if both format and size are omitted)
+    #[command(about = "Convert the specified image to the specified format and/or size  (simple show the metadata of the image if both format and size are omitted)")]
+    Image {
+        /// Path to the source image
+        #[arg(help = "Path to the source image")]
+        source: String,
+        /// Target image format. If omitted, the format of the source image will be used. (Supported values are: 'bmp', 'gif', 'ico', 'jpg'('jpeg'), 'png', 'tiff', case insensitive)
+        #[arg(short, long, help = "Target image format (Supported values are: 'bmp', 'gif', 'ico', 'jpg'('jpeg'), 'png', 'tiff', case insensitive)")]
+        format: Option<String>,
+        #[arg(short, long, help = "Target image width. If omitted, the width of the source image will be used")]
+        width: Option<u32>,
+        #[arg(short, long, help = "Target image height. If omitted, the height of the source image will be used")]
+        height: Option<u32>,
     },
     /// Start a static resource server in the specified directory
     #[command(about = "Start a static resource server in the specified directory")]

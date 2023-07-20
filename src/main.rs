@@ -1,8 +1,9 @@
 use clap::Parser;
-use crate::commands::{Cli, Commands};
+use crate::commands::{Cli, Commands, ImageCommands};
 use crate::doc::DocImpl;
 use crate::extract::ExtractImpl;
 use crate::hash::HashImpl;
+use crate::image::ImageImpl;
 use crate::serve::ServeImpl;
 
 mod commands;
@@ -11,6 +12,7 @@ mod extract;
 mod hash;
 mod serve;
 mod fontmin;
+mod image;
 
 fn main() {
     let cmd = Cli::parse().command;
@@ -19,14 +21,17 @@ fn main() {
         Commands::Doc => {
             DocImpl::handle();
         }
+        Commands::Extract { source, target, format } => {
+            ExtractImpl::handle(source, target, format);
+        }
         Commands::Hash { source, filemode, algorithm } => {
             HashImpl::handle(source, filemode, algorithm);
         }
+        Commands::Image { source, format, width, height } => {
+            ImageImpl::handle(source, format, width, height);
+        }
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);
-        }
-        Commands::Extract { source, target, format } => {
-            ExtractImpl::handle(source, target, format);
         }
         // Commands::FontMin { input, output, chars } => FontMinImpl::handle(input, output, chars),
         // _ => println!("Not yet implemented!")
