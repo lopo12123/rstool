@@ -18,14 +18,20 @@ Options:
 
 ### Support Matrix (tested on windows)
 
-| format             | support | note                                                                                                                                                                  |
-|--------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `.7z`              | ✅       ||
-| `.gz`              | ✅       ||
-| `.rar`             | ⏳       | There is no rar package for testing at the moment                                                                                                                     |
-| `.tar`             | ✅       ||
-| `.tgz` / `.tar.gz` | ✅       | `*.tar.gz` needs to manually specify `-f tar.gz` to decompress correctly, otherwise it will be simply regarded as a `.gz` file and decompressed to get a `*.tar` file |
-| `.zip`             | ✅       | After the file is decompressed, there may be garbled characters, and the encoding of the output file name depends on the terminal where the command is run            |
+| format             | support | note |
+|--------------------|---------|------|
+| `.7z`              | ✅       |      |
+| `.gz`              | ✅       |      |
+| `.rar`             | ⏳       | (1)  |
+| `.tar`             | ✅       |      |
+| `.tgz` / `.tar.gz` | ✅       | (2)  |
+| `.zip`             | ✅       | (3)  |
+
+1. There is no rar package for me to test, so I can't get it done
+2. `*.tar.gz` needs to manually specify `-f tar.gz` to decompress correctly, otherwise it will be simply regarded as
+   a `.gz` file and decompressed to get a `*.tar` file
+3. After the file is decompressed, there may be garbled characters, and the encoding of the output file name dependson
+   the terminal where the command is run
 
 ---
 

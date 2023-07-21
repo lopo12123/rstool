@@ -10,6 +10,7 @@ fn try_parse_format(source: &Path) -> Option<String> {
         Some(ext) => match ext.to_str() {
             Some("bmp") => Some("bmp".to_string()),
             Some("gif") => Some("gif".to_string()),
+            Some("ico") => Some("ico".to_string()),
             Some("jpg" | "jpeg") => Some("jpg".to_string()),
             Some("png") => Some("png".to_string()),
             Some("tiff") => Some("tiff".to_string()),
@@ -79,7 +80,10 @@ impl ImageImpl {
     }
 
     pub fn handle(source: String, format: Option<String>, size: Option<String>) {
-        println!("[Commands::Image] source = '{source}', format = '{format:?}', size = '{size:?}'");
+        println!("[Commands::Image] source = '{source}', format = '{format}', size = '{size}'",
+                 format = format.clone().unwrap_or("default".to_string()),
+                 size = size.clone().unwrap_or("default".to_string())
+        );
 
         let source_path = Path::new(&source);
 
@@ -114,5 +118,18 @@ impl ImageImpl {
                 Err(parse_err) => println!("Error: {parse_err}"),
             }
         }
+    }
+}
+
+
+#[cfg(test)]
+mod unit_test {
+    use std::path::{Path, PathBuf};
+
+    #[test]
+    fn tt() {
+        let p = PathBuf::from("D:\\rstool\\examples\\image\\img@196x196.ico").extension().unwrap().to_str().unwrap().to_owned();
+
+        println!("{}", p);
     }
 }
