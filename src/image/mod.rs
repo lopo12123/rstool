@@ -1,5 +1,4 @@
 use std::path::{Path, PathBuf};
-use image::DynamicImage;
 use crate::image::utils::{parse_image, ParsedImage, to_image};
 
 mod utils;

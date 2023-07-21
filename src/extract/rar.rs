@@ -1,8 +1,8 @@
-use std::path::Path;
+// use std::path::Path;
 
-pub fn extract_rar(rar_buffer: Vec<u8>, dest: &Path) -> Result<(), String> {
-    todo!();
-}
+// pub fn extract_rar(rar_buffer: Vec<u8>, dest: &Path) -> Result<(), String> {
+//     todo!();
+// }
 
 #[cfg(test)]
 mod unit_test {

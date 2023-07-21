@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{Cursor, Read, Write};
+use std::io::{Cursor};
 use std::path::{Path, PathBuf};
 use flate2::read::GzDecoder;
 use tar::Archive;
