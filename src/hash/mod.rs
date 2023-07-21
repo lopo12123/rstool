@@ -57,7 +57,7 @@ impl HashImpl {
 
     /// 处理 Command::Hash 子命令
     pub fn handle(source: String, filemode: bool, algorithm: String) {
-        println!("[Commands::Hash] source: '{source}', filemode: '{filemode}', algorithm: '{algorithm}'");
+        println!("[Commands::Hash] source = '{source}', filemode = '{filemode}', algorithm = '{algorithm}'");
 
         let source_bytes: Result<Vec<u8>, String> = if !filemode { Ok(source.into_bytes()) } else {
             match File::open(source) {

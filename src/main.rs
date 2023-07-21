@@ -27,8 +27,8 @@ fn main() {
         Commands::Hash { source, filemode, algorithm } => {
             HashImpl::handle(source, filemode, algorithm);
         }
-        Commands::Image { source, format, width, height } => {
-            ImageImpl::handle(source, format, width, height);
+        Commands::Image { source, format, size } => {
+            ImageImpl::handle(source, format, size);
         }
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);

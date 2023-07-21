@@ -50,10 +50,9 @@ pub enum Commands {
         /// Target image format. If omitted, the format of the source image will be used. (Supported values are: 'bmp', 'gif', 'ico', 'jpg'('jpeg'), 'png', 'tiff', case insensitive)
         #[arg(short, long, help = "Target image format (Supported values are: 'bmp', 'gif', 'ico', 'jpg'('jpeg'), 'png', 'tiff', case insensitive)")]
         format: Option<String>,
-        #[arg(short, long, help = "Target image width. If omitted, the width of the source image will be used")]
-        width: Option<u32>,
-        #[arg(short, long, help = "Target image height. If omitted, the height of the source image will be used")]
-        height: Option<u32>,
+        /// Target image size. This should be in the format of '(width)x(height)'. If only one of the width and height is specified, the other will be scaled proportionally. If both are omitted, the original size will be used. (e.g. '100x200' or 'x200' or '100x'.)
+        #[arg(short, long, help = "Target image size. This should be in the format of '(width)x(height)'. If only one of the width and height is specified, the other will be scaled proportionally. If both are omitted, the original size will be used. (e.g. '100x200' or 'x200' or '100x'.)")]
+        size: Option<String>,
     },
     /// Start a static resource server in the specified directory
     #[command(about = "Start a static resource server in the specified directory")]

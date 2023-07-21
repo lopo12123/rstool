@@ -11,6 +11,7 @@ pub fn parse_png(png_buffer: Vec<u8>) -> Result<ParsedImage, String> {
                 meta: ImageMeta::new(
                     png.width(),
                     png.height(),
+                    "png".to_string(),
                     png.color(),
                     png.color().bits_per_pixel(),
                 ),
@@ -23,12 +24,13 @@ pub fn parse_png(png_buffer: Vec<u8>) -> Result<ParsedImage, String> {
 
 /// Write the dynamic image to a buffer in the format of 'png'
 pub fn to_png(dyn_image: DynamicImage, wh: Option<(u32, u32)>) -> Result<Vec<u8>, String> {
-    if let Some((w, h)) = wh {
-        dyn_image.resize(w, h, FilterType::Nearest);
-    }
+    let final_image = match wh {
+        Some((w, h)) => dyn_image.resize(w, h, FilterType::Nearest),
+        None => dyn_image
+    };
 
     let mut png_buffer = vec![];
-    match dyn_image.write_to(&mut Cursor::new(&mut png_buffer), ImageOutputFormat::Png) {
+    match final_image.write_to(&mut Cursor::new(&mut png_buffer), ImageOutputFormat::Png) {
         Ok(_) => Ok(png_buffer),
         Err(err) => Err(format!("{err}"))
     }

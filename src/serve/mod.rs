@@ -158,7 +158,7 @@ impl ServeImpl {
 
     /// 处理 Command::Serve 子命令
     pub fn handle(root: String, entry: String, port: u16, mode: String) {
-        println!("[Commands::Serve] root: '{root}' entry: '{entry}', port: '{port}', mode: '{mode}'");
+        println!("[Commands::Serve] root = '{root}', entry = '{entry}', port = '{port}', mode = '{mode}'");
 
         match ServerBuilder::try_build(root, entry, port, mode) {
             Ok(server) => {
