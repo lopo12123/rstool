@@ -1,10 +1,7 @@
 use std::path::{Path, PathBuf};
 use image::DynamicImage;
-use crate::image::png::{parse_png, to_png};
-use crate::image::utils::ParsedImage;
+use crate::image::utils::{parse_image, ParsedImage, to_image};
 
-mod bmp;
-mod png;
 mod utils;
 
 /// Try to parse the format from the file extension
@@ -56,7 +53,7 @@ fn calc_final_size(size: (Option<u32>, Option<u32>), w: u32, h: u32) -> Option<(
 
 fn normalized_size(size: Option<(u32, u32)>) -> String {
     match size {
-        Some((w, h)) => format!("{w}x{h}"),
+        Some((w, h)) => format!("@{w}x{h}"),
         None => "".to_string()
     }
 }
@@ -64,16 +61,8 @@ fn normalized_size(size: Option<(u32, u32)>) -> String {
 pub struct ImageImpl {}
 
 impl ImageImpl {
-    /// Read the image from the buffer (with format specified), get the meta data and the raw data
-    fn read_image_buffer(source_buffer: Vec<u8>, format: String) -> Result<ParsedImage, String> {
-        match format.as_str() {
-            "png" => parse_png(source_buffer),
-            _ => Err(format!("Invalid source format. (Expect one of: bmp, gif, jpg/jpeg, png, tiff, Got: {format})"))
-        }
-    }
-
-    /// Read the image from the path, get the meta data and the raw data
-    fn read_image(source: &Path) -> Result<ParsedImage, String> {
+    /// Read the image from the path, get the format and the parsed image
+    fn read_image(source: &Path) -> Result<(String, ParsedImage), String> {
         // Try to parse the format from the file extension if it is not provided
         match try_parse_format(source) {
             Some(source_format) => {
@@ -83,17 +72,9 @@ impl ImageImpl {
                     Err(err) => return Err(format!("{err}"))
                 };
 
-                ImageImpl::read_image_buffer(file_raw, source_format)
+                parse_image(file_raw).map(|parsed_image| (source_format, parsed_image))
             }
             None => Err(format!("Invalid format. (Could not parse format from file extension)"))
-        }
-    }
-
-    /// Generate the dynamic image to the buffer (with format specified)
-    fn generate_image(dyn_image: DynamicImage, format: &str, size: Option<(u32, u32)>) -> Result<Vec<u8>, String> {
-        match format {
-            "png" => to_png(dyn_image, size),
-            _ => Err(format!("Invalid target format. (Expect one of: bmp, gif, jpg/jpeg, png, tiff, Got: {format})"))
         }
     }
 
@@ -108,19 +89,19 @@ impl ImageImpl {
             println!("Error: Source file is not a file");
         } else {
             match ImageImpl::read_image(source_path) {
-                Ok(parsed_image) => {
+                Ok((source_format, parsed_image)) => {
                     println!("Image meta: {}", parsed_image.meta.to_string());
 
                     if format.is_some() || size.is_some() {
-                        let target_format = format.unwrap_or(parsed_image.meta.format);
+                        let target_format = format.unwrap_or(source_format);
                         let target_size = calc_final_size(try_parse_size(size), parsed_image.meta.w, parsed_image.meta.h);
 
-                        match ImageImpl::generate_image(parsed_image.dyn_image, &target_format, target_size) {
+                        match to_image(parsed_image.dyn_image, target_size, &target_format) {
                             Ok(image_buffer) => {
                                 let target_stem = source_path.file_stem().map_or("", |stem| stem.to_str().unwrap_or("unknown")).to_string();
                                 // write to file
                                 let mut target_path = PathBuf::from(source_path.parent().unwrap_or(Path::new("")));
-                                target_path.push(format!("{}@{}.{}", target_stem, normalized_size(target_size), target_format));
+                                target_path.push(format!("{}{}.{}", target_stem, normalized_size(target_size), target_format));
                                 match std::fs::write(&target_path, image_buffer) {
                                     Ok(_) => println!("Ok. (Image generated successfully at '{:?}')", target_path),
                                     Err(write_err) => println!("Error: {write_err}")
