@@ -50,3 +50,7 @@ ize will be used. (e.g. '100x200' or 'x200' or '100x'.)
 3. Converting from an image with an alpha channel to `jpeg` will lose information, and previously transparent parts will
    become completely black. This is because `jpeg` does not support alpha channels. For details, please refer to
    the [JPEG](https://en.wikipedia.org/wiki/JPEG)
+
+---
+
+Last modified on **2023-07-22**
