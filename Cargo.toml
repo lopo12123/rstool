@@ -1,6 +1,6 @@
 [package]
 name = "rstool"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 authors = ["lopo<lopo@zju.edu.cn>"]
 description = "a cli tools written in rust"
