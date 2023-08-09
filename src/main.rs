@@ -1,7 +1,7 @@
 use clap::Parser;
 use crate::commands::{Cli, Commands};
 use crate::doc::DocImpl;
-use crate::extract::ExtractImpl;
+use crate::extract::{ExtractImpl, UnpackImpl};
 use crate::hash::HashImpl;
 use crate::image::ImageImpl;
 use crate::serve::ServeImpl;
@@ -32,6 +32,9 @@ fn main() {
         }
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);
+        }
+        Commands::Unpack { source, destination } => {
+            UnpackImpl::handle(source, destination);
         }
         // Commands::FontMin { input, output, chars } => FontMinImpl::handle(input, output, chars),
         // _ => println!("Not yet implemented!")

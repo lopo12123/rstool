@@ -54,6 +54,12 @@ pub enum Commands {
         #[arg(short, long, help = "Target image size. This should be in the format of '(width)x(height)'. If only one of the width and height is specified, the other will be scaled proportionally. If both are omitted, the original size will be used. (e.g. '100x200' or 'x200' or '100x'.)")]
         size: Option<String>,
     },
+    /// Package the specified directory or file into an archive or compressed package of the specified format
+    // Pack {
+    //     #[arg(multiple, help = "The path to the directory or files to be packaged")]
+    //     source: Vec<String>,
+    //     target: Option<String>,
+    // },
     /// Start a static resource server in the specified directory
     #[command(about = "Start a static resource server in the specified directory")]
     Serve {
@@ -69,6 +75,16 @@ pub enum Commands {
         /// Server mode
         #[arg(short, long, help = format!("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
         mode: String,
+    },
+    /// Unpack the specified archive or compressed package into the specified directory
+    #[command(about = "Unpack the specified archive or compressed package into the specified directory")]
+    Unpack {
+        /// The path where the compressed file or archive is located (points to a file)
+        #[arg(help = "The path where the compressed file or archive is located (points to a file)")]
+        source: String,
+        /// The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically, default to '.')
+        #[arg(help = "The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically, default to '.')", default_value = ".")]
+        destination: String,
     },
     // A tool that generates a character-specific subset for a font file and can also view the font file's metadata.
     // #[command(about = "A tool that generates a character-specific subset for a font file and can also view the font file's metadata.")]
