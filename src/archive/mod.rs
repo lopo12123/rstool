@@ -27,7 +27,9 @@ type PackWorker = fn(buffer: Vec<u8>, dest: &Path) -> Result<(), String>;
 pub struct PackImpl {}
 
 impl PackImpl {
-    // TODO
+    pub fn handle(destination: String, source: Vec<String>) {
+        println!("[Commands::Pack] destination = '{destination}', source = '{source:?}'");
+    }
 }
 
 // ==================== UnPack ====================

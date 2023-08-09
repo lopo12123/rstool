@@ -2036,6 +2036,7 @@ dependencies = [
  "sha2 0.10.7",
  "sha3",
  "tar",
+ "walkdir",
  "webbrowser",
  "zip",
 ]

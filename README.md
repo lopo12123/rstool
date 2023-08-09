@@ -42,7 +42,7 @@ Options:
 | command   | cli | node-addon | wasm | details                                      |
 |-----------|-----|------------|------|----------------------------------------------|
 | `Doc`     | ✅   | ⏳          | ⏳    | [Commands::doc](./src/doc/README.md)         |
-| `Extract` | ✅   | ⏳          | ⏳    | [Commands::extract](./src/extract/README.md) |
+| `Extract` | ✅   | ⏳          | ⏳    | [Commands::extract](src/archive/README.md) |
 | `Hash`    | ✅   | ⏳          | ⏳    | [Commands::hash](./src/hash/README.md)       |
 | `Image`   | ✅   | ⏳          | ⏳    | [Commands::image](./src/image/README.md)     |
 | `Serve`   | ✅   | ⏳          | ⏳    | [Commands::serve](./src/serve/README.md)     |

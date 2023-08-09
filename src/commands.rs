@@ -19,15 +19,6 @@ pub enum Commands {
     /// Open the document in the default browser
     #[command(about = "Open the document in the default browser")]
     Doc,
-    #[command(about = "Extract compressed or archived files")]
-    Extract {
-        #[arg(short, long, help = "The path where the compressed file or archive is located (points to a file)")]
-        source: String,
-        #[arg(short, long, help = "The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically)", default_value = ".")]
-        target: String,
-        #[arg(short, long, help = "The format of the compressed or archived file, if omitted it will be automatically inferred from the file suffix. (Supported values are: 'zip', 'rar', '7z', 'tar', 'tgz'/'tar.gz', case insensitive)")]
-        format: Option<String>,
-    },
     /// Get the digest of the specified source
     #[command(about = "Get the digest of the specified source")]
     Hash {
@@ -54,12 +45,16 @@ pub enum Commands {
         #[arg(short, long, help = "Target image size. This should be in the format of '(width)x(height)'. If only one of the width and height is specified, the other will be scaled proportionally. If both are omitted, the original size will be used. (e.g. '100x200' or 'x200' or '100x'.)")]
         size: Option<String>,
     },
-    /// Package the specified directory or file into an archive or compressed package of the specified format
-    // Pack {
-    //     #[arg(multiple, help = "The path to the directory or files to be packaged")]
-    //     source: Vec<String>,
-    //     target: Option<String>,
-    // },
+    /// Pack any number of files or directories (possibly both) into an archive or compressed package of the specified format. (Supported values are: '\*.7z', '\*.tar', '\*.tgz', '\*.tar.gz', '\*.zip', case insensitive)
+    #[command(about = "Pack any number of files or directories (possibly both) into an archive or compressed package of the specified format. (Supported values are: '*.7z', '*.tar', '*.tgz', '*.tar.gz', '*.zip', case insensitive)")]
+    Pack {
+        /// The path to the archive or compressed package to be created. The tool will judge its format according to its suffix, please make sure the format and suffix match. (Supported values are: '\*.7z', '\*.tar', '\*.tgz', '\*.tar.gz', '\*.zip', case insensitive)
+        #[arg(help = "The path to the archive or compressed package to be created. The tool will judge its format according to its suffix, please make sure the format and suffix match. (Supported values are: '*.7z', '*.tar', '*.tgz', '*.tar.gz', '*.zip', case insensitive)")]
+        destination: String,
+        /// The path to the directory(s) or file(s) to be packaged
+        #[arg(help = "The path to the directory(s) or file(s) to be packaged")]
+        sources: Vec<String>,
+    },
     /// Start a static resource server in the specified directory
     #[command(about = "Start a static resource server in the specified directory")]
     Serve {
@@ -76,11 +71,11 @@ pub enum Commands {
         #[arg(short, long, help = format!("{MODE_DESC}\n{SINGLE_MODE}\n{MIXED_MODE}\n{DIRECT_MODE}\n"), default_value = "mixed")]
         mode: String,
     },
-    /// Unpack the specified archive or compressed package into the specified directory
-    #[command(about = "Unpack the specified archive or compressed package into the specified directory")]
+    /// Unpack the specified archive or compressed package into the specified directory. (Supported values are: '\*.7z', '\*.tar', '\*.tgz', '\*.tar.gz', '\*.zip', case insensitive)
+    #[command(about = "Unpack the specified archive or compressed package into the specified directory. (Supported values are: '*.7z', '*.tar', '*.tgz'/'*.tar.gz', '*.zip', case insensitive)")]
     Unpack {
-        /// The path where the compressed file or archive is located (points to a file)
-        #[arg(help = "The path where the compressed file or archive is located (points to a file)")]
+        /// The path where the compressed file or archive is located (points to a file). The tool will judge its format according to its suffix, please make sure the format and suffix match. (Supported values are: '\*.7z', '\*.tar', '\*.tgz', '\*.tar.gz', '\*.zip', case insensitive)
+        #[arg(help = "The path where the compressed file or archive is located (points to a file). The tool will judge its format according to its suffix, please make sure the format and suffix match. (Supported values are: '*.7z', '*.tar', '*.tgz', '*.tar.gz', '*.zip', case insensitive)")]
         source: String,
         /// The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically, default to '.')
         #[arg(help = "The path to extract the compressed file or archive (points to a folder, if the folder does not exist, it will be created automatically, default to '.')", default_value = ".")]
