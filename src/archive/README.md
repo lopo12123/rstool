@@ -45,9 +45,10 @@ Options:
 | `.zip`             | ✅       | (2)  |
 
 1. `*.tar.gz` is exactly the same as `*.tgz`
-2. After the file is decompressed, there may be garbled characters, and the encoding of the output file name depends on
-   the terminal where the command is run
+2. After the file is decompressed, there may be garbled characters. See entries D.1 and D.2 of the ZIP file format
+   specification for reasons for garbled
+   behavior. [The latest ZIP standard](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT)
 
 ---
 
-Last modified on **2023-08-09**
+Last modified on **2023-08-13**

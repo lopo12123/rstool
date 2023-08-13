@@ -34,3 +34,24 @@ pub fn extract_zip(zip_buffer: Vec<u8>, desc: &Path) -> Result<(), String> {
 pub fn archive_zip() -> Result<(), String> {
     Ok(())
 }
+
+#[cfg(test)]
+mod unit_test {
+    use std::fs::File;
+    use encoding_rs::{GBK, UTF_8};
+    use super::*;
+
+    #[test]
+    fn pack() {
+        let path = Path::new(r"D:\rstool\test\pack.zip");
+        let file = File::create(path).unwrap();
+
+        let mut zip = zip::ZipWriter::new(file);
+
+        // zip.add_directory("根目录/", Default::default());
+        zip.add_directory("根目录/子目录1", Default::default());
+        zip.add_directory("根目录/子目录2", Default::default());
+
+        zip.finish();
+    }
+}

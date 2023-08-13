@@ -20,6 +20,7 @@ clap = { version = "4.0.26", features = ["derive"] }
 webbrowser = "0.8.10"
 
 # Commands::Unpack & Commands::Pack
+encoding_rs = "0.8.32"
 flate2 = "1.0.26"
 sevenz-rust = "0.4.3"
 tar = "0.4.39"

@@ -2021,6 +2021,7 @@ name = "rstool"
 version = "0.1.3"
 dependencies = [
  "clap",
+ "encoding_rs",
  "flate2",
  "font-kit",
  "image",
