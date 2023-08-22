@@ -1,4 +1,6 @@
 use std::{fs, io};
+use std::ffi::OsStr;
+use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
@@ -15,6 +17,24 @@ pub fn ensured_path(target: String) -> Result<PathBuf, String> {
     }
 }
 
+/// 路径类型
+#[derive(Debug)]
+enum PathType { File, Dir, NotExist }
+
+/// 获取路径的类型
+fn get_path_type(path: &str) -> PathType {
+    let p = Path::new(path);
+    if !p.exists() {
+        PathType::NotExist
+    } else {
+        if p.is_dir() {
+            PathType::Dir
+        } else {
+            PathType::File
+        }
+    }
+}
+
 /// 压缩包中的一个条目
 pub struct ArchiveEntry {
     /// 压缩包在本地的路径
@@ -28,7 +48,7 @@ pub struct ArchiveEntry {
 }
 
 impl ArchiveEntry {
-    pub fn dir(base: impl Into<String>, path_to_root: impl Into<String>) -> ArchiveEntry {
+    pub fn dir(base: &str, path_to_root: &str) -> ArchiveEntry {
         ArchiveEntry {
             base: base.into(),
             path_to_root: path_to_root.into(),
@@ -36,7 +56,7 @@ impl ArchiveEntry {
             binary: None,
         }
     }
-    pub fn file(base: impl AsRef<Path> + Into<String>, path_to_root: impl Into<String>) -> io::Result<ArchiveEntry> {
+    pub fn file(base: &str, path_to_root: &str) -> io::Result<ArchiveEntry> {
         match fs::read(&base) {
             Ok(binary) => Ok(ArchiveEntry {
                 base: base.into(),
@@ -48,10 +68,41 @@ impl ArchiveEntry {
         }
     }
 
-    pub fn from_path_list(base: impl AsRef<Path>, path_list: Vec<String>) -> Vec<ArchiveEntry> {
+    pub fn from_path_list(base: &str, entry_list: Vec<&str>) -> Vec<ArchiveEntry> {
         let mut entries = vec![];
 
+        for path in entry_list.iter() {
+            println!("got args: {:#?}", path.to_string());
+        }
 
         entries
+    }
+}
+
+#[cfg(test)]
+mod unit_test {
+    use super::*;
+
+    #[test]
+    fn walk() {
+        let base = r"D:\rstool\test";
+        let items = vec![
+            r"\folder",
+            "/aa.html",
+            "img@64x64.ico",
+            "rstool2.exe",
+            "with blank.txt",
+            "not_exist.txt",
+        ];
+
+        // ArchiveEntry::from_path_list(base, items);
+
+        let base = PathBuf::from(base);
+        for item in items {
+            let mut p = base.clone();
+            // FIXME: concat absolute paths
+            p.push(item);
+            println!("path type is: {:?}", p);
+        }
     }
 }
