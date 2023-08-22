@@ -38,7 +38,6 @@ pub fn archive_zip() -> Result<(), String> {
 #[cfg(test)]
 mod unit_test {
     use std::fs::File;
-    use encoding_rs::{GBK, UTF_8};
     use super::*;
 
     #[test]
