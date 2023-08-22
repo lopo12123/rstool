@@ -15,6 +15,8 @@ type PackWorker = fn(buffer: Vec<u8>, dest: &Path) -> Result<(), String>;
 pub struct PackImpl {}
 
 impl PackImpl {
+    pub fn pack() {}
+
     pub fn handle(destination: String, source: Vec<String>) {
         println!("[Commands::Pack] destination = '{destination}', source = '{source:?}'");
     }
@@ -68,20 +70,30 @@ impl UnpackImpl {
 
 #[cfg(test)]
 mod unit_test {
+    use std::path::PathBuf;
     use walkdir::WalkDir;
     use super::*;
 
     #[test]
-    fn walk() {
-        let source = r"D:\rstool\test\folder";
+    fn tttt() {
+        let a = Some(1);
 
-        let walk = WalkDir::new(source);
-        for entry in walk {
+        println!("hello!");
+    }
+
+    #[test]
+    fn walk() {
+        let source = r"C:\Users\20366\Desktop\misc_test\zip";
+
+        let root = PathBuf::from(source);
+
+        let walker = WalkDir::new(source);
+        for entry in walker {
             let entry = entry.unwrap();
             let path = entry.path();
             let path_str = path.to_str().unwrap();
             let path_str = path_str.replace(source, "");
-            println!("target: {}, type: {:?}", path_str, entry.path().is_dir());
+            println!("target: {}, is_dir: {:?}", path_str, entry.path().is_dir());
         }
     }
 }
