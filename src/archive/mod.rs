@@ -83,17 +83,29 @@ mod unit_test {
 
     #[test]
     fn walk() {
-        let source = r"C:\Users\20366\Desktop\misc_test\zip";
+        // let source = r"D:\rstool\test\folder";
+        //
+        // let root = PathBuf::from(source);
+        //
+        // let walker = WalkDir::new(source);
+        // for entry in walker {
+        //     let entry = entry.unwrap();
+        //     let path = entry.path();
+        //     // entry.depth();
+        //     let path_str = path.to_str().unwrap();
+        //     let path_str = path_str.replace(source, "");
+        //     println!("path: {:?}\nto_str: {:?}", &path, &path.to_str().unwrap());
+        //
+        //
+        //     // let mut p = PathBuf::from(r"D:\rstool");
+        //     // p.push(&path_str);
+        //     // println!("after push: {}", p.to_str().unwrap());
+        // }
 
-        let root = PathBuf::from(source);
+        let source = ".";
 
         let walker = WalkDir::new(source);
-        for entry in walker {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            let path_str = path.to_str().unwrap();
-            let path_str = path_str.replace(source, "");
-            println!("target: {}, is_dir: {:?}", path_str, entry.path().is_dir());
-        }
+        let last = walker.into_iter().last().unwrap().unwrap();
+        println!("{:?}", last.path());
     }
 }
