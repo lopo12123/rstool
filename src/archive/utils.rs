@@ -22,8 +22,7 @@ pub fn ensured_path(target: String) -> Result<PathBuf, String> {
 enum PathType { File, Dir, NotExist }
 
 /// 获取路径的类型
-fn get_path_type(path: &str) -> PathType {
-    let p = Path::new(path);
+fn get_path_type(p: &PathBuf) -> PathType {
     if !p.exists() {
         PathType::NotExist
     } else {
@@ -56,6 +55,7 @@ impl ArchiveEntry {
             binary: None,
         }
     }
+
     pub fn file(base: &str, path_to_root: &str) -> io::Result<ArchiveEntry> {
         match fs::read(&base) {
             Ok(binary) => Ok(ArchiveEntry {
@@ -68,11 +68,40 @@ impl ArchiveEntry {
         }
     }
 
+
+    pub fn from_dir(base: &str, path_to_root: &str) -> Vec<ArchiveEntry> {
+        let mut entries = vec![];
+
+        // TODO: 遍历并添加文件夹中的所有文件, 若不存在子文件则添加空文件夹
+
+        entries
+    }
+
     pub fn from_path_list(base: &str, entry_list: Vec<&str>) -> Vec<ArchiveEntry> {
         let mut entries = vec![];
 
-        for path in entry_list.iter() {
-            println!("got args: {:#?}", path.to_string());
+        for entry in entry_list {
+            let mut p = PathBuf::from(base);
+            p.push(entry);
+
+            match get_path_type(&p) {
+                // 若为文件则添加文件
+                PathType::File => {
+                    match ArchiveEntry::file(base, entry) {
+                        Ok(entry) => entries.push(entry),
+                        Err(err) => println!("Error: {} ({})", err, entry),
+                    }
+                }
+                // 若为文件夹则添加文件夹中的所有文件
+                PathType::Dir => {
+                    let _entries = ArchiveEntry::from_dir(base, entry);
+                    for entry in _entries {
+                        entries.push(entry);
+                    }
+                }
+                // 不存在则静默忽略
+                _ => {}
+            }
         }
 
         entries
@@ -85,24 +114,35 @@ mod unit_test {
 
     #[test]
     fn walk() {
-        let base = r"D:\rstool\test";
+        // let base = r"D:\rstool\test";
+        // let items = vec![
+        //     r"\folder",
+        //     "/aa.html",
+        //     "img@64x64.ico",
+        //     "rstool2.exe",
+        //     "with blank.txt",
+        //     "not_exist.txt",
+        // ];
+
+        let base = r"D:\pool\pack_test";
         let items = vec![
             r"\folder",
-            "/aa.html",
-            "img@64x64.ico",
-            "rstool2.exe",
+            "中文",
+            "a.txt",
+            "b.txt",
             "with blank.txt",
             "not_exist.txt",
         ];
 
-        // ArchiveEntry::from_path_list(base, items);
+        let list = ArchiveEntry::from_path_list(base, items);
+        println!("list: {}", list.len());
 
-        let base = PathBuf::from(base);
-        for item in items {
-            let mut p = base.clone();
-            // FIXME: concat absolute paths
-            p.push(item);
-            println!("path type is: {:?}", p);
-        }
+        // let base = PathBuf::from(base);
+        // for item in items {
+        //     let mut p = base.clone();
+        //     // FIXME: concat absolute paths
+        //     p.push(item);
+        //     println!("path type is: {:?}", p);
+        // }
     }
 }
