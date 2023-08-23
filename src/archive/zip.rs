@@ -38,11 +38,13 @@ pub fn archive_zip() -> Result<(), String> {
 #[cfg(test)]
 mod unit_test {
     use std::fs::File;
+    use std::io::Write;
     use super::*;
 
     #[test]
     fn pack() {
         let path = Path::new(r"D:\rstool\test\pack.zip");
+        let path = Path::new(r"C:\Users\20366\Desktop\misc_test\pack.zip");
         let file = File::create(path).unwrap();
 
         let mut zip = zip::ZipWriter::new(file);
@@ -50,6 +52,10 @@ mod unit_test {
         // zip.add_directory("根目录/", Default::default());
         zip.add_directory("根目录/子目录1", Default::default());
         zip.add_directory("根目录/子目录2", Default::default());
+        zip.add_directory("根目录/sub1/sub2", Default::default());
+        zip.add_directory("根目录/sub1/sub2/sub3", Default::default());
+        zip.start_file("根目录/子目录3/文件1.txt", Default::default()).unwrap();
+        zip.write_all(b"Hello, World!").unwrap();
 
         zip.finish();
     }
