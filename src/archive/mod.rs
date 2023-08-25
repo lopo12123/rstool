@@ -35,7 +35,7 @@ impl UnpackImpl {
             "gz" => Some(tgz::extract_gz),
             "tar" => Some(tgz::extract_tar),
             "tgz" | "tar.gz" => Some(tgz::extract_tgz),
-            "zip" => Some(zip::unpack),
+            "zip" => Some(zip::extract_zip),
             _ => None,
         };
 
