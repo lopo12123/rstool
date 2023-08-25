@@ -15,7 +15,7 @@ pub fn ensured_path(target: String) -> Result<PathBuf, String> {
     }
 }
 
-/// 路径类型
+// --------------------- PathType --------------------------
 #[derive(Debug)]
 enum PathType { File, Folder, NotExist }
 
@@ -34,8 +34,11 @@ impl PathType {
     }
 }
 
+// --------------------- ArchiveEntry ---------------------
 pub struct ArchiveEntry {
-    /// 相对于 `disk_root` 的路径
+    /// 条目在磁盘上的路径
+    pub disk_dir: PathBuf,
+    /// 条目在归档中的路径, 相对于 `disk_root`
     pub pack_dir: String,
     /// 是否为文件
     pub is_file: bool,
@@ -43,6 +46,7 @@ pub struct ArchiveEntry {
     pub raw: Option<Vec<u8>>,
 }
 
+// --------------------- ArchiveBuilder ---------------------
 pub struct ArchiveBuilder {
     /// 本地的根目录
     pub disk_root: PathBuf,
@@ -56,20 +60,20 @@ pub struct ArchiveBuilder {
 
 impl ArchiveBuilder {
     /// 解析 `items`, 分为 `as_file`, `as_folder`, `ignored` 三类
-    fn parse_records(&mut self, items: Vec<&str>) {
+    fn parse_items(&mut self, items: Vec<&str>) {
         for item in items {
             // 拼接出条目的完整路径
-            let mut record_disk_dir = self.disk_root.clone();
-            record_disk_dir.push(item);
+            let mut disk_dir = self.disk_root.clone();
+            disk_dir.push(item);
 
-            match PathType::parse(&record_disk_dir) {
+            match PathType::parse(&disk_dir) {
                 // 若为文件则添加文件
                 PathType::File => {
                     self.as_file.push(item.to_string());
                 }
                 // 若为文件夹则添加文件夹中的所有文件
                 PathType::Folder => {
-                    for item in WalkDir::new(record_disk_dir) {
+                    for item in WalkDir::new(disk_dir) {
                         let item = item.unwrap();
 
                         // 路径层级统一成使用 '/' 分隔
@@ -102,14 +106,6 @@ impl ArchiveBuilder {
         }
     }
 
-    /// read the binary of item, based on `disk_root`
-    fn read_raw(&self, item: &str) -> Option<Vec<u8>> {
-        let mut p = self.disk_root.clone();
-        p.push(item);
-
-        fs::read(p).ok()
-    }
-
     /// parse items into `file` or `folder` or `ignored`, based on `disk_root`
     pub fn build(disk_root: impl Into<PathBuf>, items: Vec<&str>) -> ArchiveBuilder {
         let mut prefab = ArchiveBuilder {
@@ -119,7 +115,7 @@ impl ArchiveBuilder {
             ignored: vec![],
         };
 
-        prefab.parse_records(items);
+        prefab.parse_items(items);
 
         prefab
     }
@@ -129,8 +125,13 @@ impl ArchiveBuilder {
         let mut entries = vec![];
 
         for file in &self.as_file {
-            let raw = self.read_raw(&file);
+            let mut disk_dir = self.disk_root.clone();
+            disk_dir.push(&file);
+
+            let raw = fs::read(&disk_dir).ok();
+
             entries.push(ArchiveEntry {
+                disk_dir,
                 pack_dir: file.to_string(),
                 is_file: true,
                 raw,
@@ -138,7 +139,11 @@ impl ArchiveBuilder {
         }
 
         for folder in &self.as_folder {
+            let mut disk_dir = self.disk_root.clone();
+            disk_dir.push(&folder);
+
             entries.push(ArchiveEntry {
+                disk_dir,
                 pack_dir: folder.to_string(),
                 is_file: false,
                 raw: None,
