@@ -34,6 +34,15 @@ impl PathType {
     }
 }
 
+pub struct ArchiveEntry {
+    /// 相对于 `disk_root` 的路径
+    pub pack_dir: String,
+    /// 是否为文件
+    pub is_file: bool,
+    /// 二进制数据
+    pub raw: Option<Vec<u8>>,
+}
+
 pub struct ArchiveBuilder {
     /// 本地的根目录
     pub disk_root: PathBuf,
@@ -63,12 +72,20 @@ impl ArchiveBuilder {
                     for item in WalkDir::new(record_disk_dir) {
                         let item = item.unwrap();
 
+                        // 路径层级统一成使用 '/' 分隔
                         match item.path().strip_prefix(self.disk_root.clone()) {
                             Ok(v) => {
+                                let v = v.to_str().unwrap().to_string().replace(r"\", "/");
+
+                                // 忽略空路径 (WalkDir 的根路径)
+                                if v == "" {
+                                    continue;
+                                }
+
                                 if item.file_type().is_dir() {
-                                    self.as_folder.push(v.to_str().unwrap().to_string());
+                                    self.as_folder.push(v);
                                 } else if item.file_type().is_file() {
-                                    self.as_file.push(v.to_str().unwrap().to_string());
+                                    self.as_file.push(v);
                                 }
                             }
                             Err(err) => {
@@ -85,6 +102,14 @@ impl ArchiveBuilder {
         }
     }
 
+    /// read the binary of item, based on `disk_root`
+    fn read_raw(&self, item: &str) -> Option<Vec<u8>> {
+        let mut p = self.disk_root.clone();
+        p.push(item);
+
+        fs::read(p).ok()
+    }
+
     /// parse items into `file` or `folder` or `ignored`, based on `disk_root`
     pub fn build(disk_root: impl Into<PathBuf>, items: Vec<&str>) -> ArchiveBuilder {
         let mut prefab = ArchiveBuilder {
@@ -99,12 +124,28 @@ impl ArchiveBuilder {
         prefab
     }
 
-    /// read the binary of item, based on `disk_root`
-    pub fn read_raw(&self, item: &str) -> Option<Vec<u8>> {
-        let mut p = self.disk_root.clone();
-        p.push(item);
+    /// get entries
+    pub fn get_entries(&self) -> Vec<ArchiveEntry> {
+        let mut entries = vec![];
 
-        fs::read(p).ok()
+        for file in &self.as_file {
+            let raw = self.read_raw(&file);
+            entries.push(ArchiveEntry {
+                pack_dir: file.to_string(),
+                is_file: true,
+                raw,
+            });
+        }
+
+        for folder in &self.as_folder {
+            entries.push(ArchiveEntry {
+                pack_dir: folder.to_string(),
+                is_file: false,
+                raw: None,
+            });
+        }
+
+        entries
     }
 }
 
@@ -112,18 +153,11 @@ impl ArchiveBuilder {
 mod unit_test {
     use super::*;
 
+    /// ArchiveBuilder build 测试
     #[test]
     fn build_test() {
-        let base = r"D:\rstool\test";
-        let items = vec![
-            "folder",
-            r"\folder",
-            "/aa.html",
-            "img@64x64.ico",
-            "rstool2.exe",
-            "with blank.txt",
-            "not_exist.txt",
-        ];
+        let base = r"C:\Users\20366\Desktop\misc_test\zip";
+        let items = vec!["."];
 
         let b = ArchiveBuilder::build(base, items);
 
