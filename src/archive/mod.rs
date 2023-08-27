@@ -70,7 +70,6 @@ impl UnpackImpl {
 
 #[cfg(test)]
 mod unit_test {
-    use super::*;
     use walkdir::WalkDir;
 
     #[test]

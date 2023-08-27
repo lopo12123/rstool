@@ -7,3 +7,8 @@ pub fn extract_sevenz(sevenz_buffer: Vec<u8>, dest: &Path) -> Result<(), String>
         Err(err) => Err(format!("{err}")),
     }
 }
+
+pub fn pack() {}
+
+#[cfg(test)]
+mod unit_test {}

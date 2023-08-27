@@ -161,7 +161,7 @@ mod unit_test {
     /// ArchiveBuilder build 测试
     #[test]
     fn build_test() {
-        let base = r"C:\Users\20366\Desktop\misc_test\zip";
+        // let base = r"C:\Users\20366\Desktop\misc_test\zip";
         let base = r"C:\Users\20366\Desktop\misc";
         let items = vec!["."];
 

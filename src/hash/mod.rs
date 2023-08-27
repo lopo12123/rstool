@@ -84,8 +84,6 @@ impl HashImpl {
 
 #[cfg(test)]
 mod unit_test {
-    use super::*;
-
     #[test]
     fn hash_test() {
         // HashImpl::handle("hello world".to_string(), false, "md5".to_string());

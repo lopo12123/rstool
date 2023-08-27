@@ -1,4 +1,4 @@
-use std::{fs, io};
+use std::fs;
 use std::cmp::Ordering;
 use std::io::{Cursor, Read, Write};
 use std::path::{Path, PathBuf};
@@ -94,8 +94,6 @@ pub fn pack(entries: Vec<ArchiveEntry>) -> Vec<u8> {
 #[cfg(test)]
 mod unit_test {
     use super::*;
-    use std::fs::File;
-    use std::io::Write;
     use crate::archive::utils::ArchiveBuilder;
 
     /// unpack 函数测试
@@ -121,7 +119,7 @@ mod unit_test {
     /// pack 函数测试
     #[test]
     fn pack_test() {
-        let base = r"C:\Users\20366\Desktop\misc_test\zip";
+        // let base = r"C:\Users\20366\Desktop\misc_test\zip";
         let base = r"C:\Users\20366\Desktop\misc";
         let items = vec!["."];
 

@@ -198,10 +198,8 @@ impl ServeImpl {
 
 #[cfg(test)]
 mod unit_test {
-    use std::path::Path;
     use super::*;
-    use ipconfig::{get_adapters, Adapter};
-    use rocket::http::ext::Normalize;
+    use ipconfig::{get_adapters};
 
     #[test]
     fn ips() {
