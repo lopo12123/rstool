@@ -162,6 +162,7 @@ mod unit_test {
     #[test]
     fn build_test() {
         let base = r"C:\Users\20366\Desktop\misc_test\zip";
+        let base = r"C:\Users\20366\Desktop\misc";
         let items = vec!["."];
 
         let b = ArchiveBuilder::build(base, items);

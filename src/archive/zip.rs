@@ -122,32 +122,13 @@ mod unit_test {
     #[test]
     fn pack_test() {
         let base = r"C:\Users\20366\Desktop\misc_test\zip";
+        let base = r"C:\Users\20366\Desktop\misc";
         let items = vec!["."];
 
         let entries = ArchiveBuilder::build(base, items).get_entries();
         let package = pack(entries);
-        fs::write(r"C:\Users\20366\Desktop\misc_test\zip_package.zip", package).unwrap();
+
+        fs::write(r"C:\Users\20366\Desktop\misc.zip", package).unwrap();
         println!("done!");
-    }
-
-    #[test]
-    /// zip 打包测试
-    fn zip_test() {
-        let path = Path::new(r"D:\rstool\test\pack.zip");
-        let path = Path::new(r"C:\Users\20366\Desktop\misc_test\pack.zip");
-        let file = File::create(path).unwrap();
-
-        let mut zip = zip::ZipWriter::new(file);
-
-        // zip.add_directory("根目录/", Default::default());
-        zip.add_directory("根目录/子目录1", Default::default());
-        zip.add_directory("根目录\\子目录1", Default::default());
-        zip.add_directory("根目录/子目录2", Default::default());
-        zip.add_directory("根目录/sub1/sub2", Default::default());
-        zip.add_directory("根目录/sub1/sub2/sub3", Default::default());
-        zip.start_file("根目录/子目录3/文件1.txt", Default::default()).unwrap();
-        zip.write_all(b"Hello, World!").unwrap();
-
-        zip.finish();
     }
 }
