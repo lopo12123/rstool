@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::Read;
 use md5::Md5;
 use ripemd::{Ripemd128, Ripemd160, Ripemd256, Ripemd320};
 use sha1::Sha1;

@@ -1,7 +1,6 @@
-use std::fs;
 use std::cmp::Ordering;
 use std::io::{Cursor, Read, Write};
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use crate::archive::utils::ArchiveEntry;
 
 /// 将 zip 解包为 `ArchiveEntry` 列表, 返回 `ArchiveEntry` 列表 (按照文件夹优先, 文件次之的顺序排序)
