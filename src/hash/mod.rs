@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::fs;
 use std::io::Read;
 use md5::Md5;
 use ripemd::{Ripemd128, Ripemd160, Ripemd256, Ripemd320};
@@ -60,16 +60,7 @@ impl HashImpl {
         println!("[Commands::Hash] source = '{source}', filemode = '{filemode}', algorithm = '{algorithm}'");
 
         let source_bytes: Result<Vec<u8>, String> = if !filemode { Ok(source.into_bytes()) } else {
-            match File::open(source) {
-                Ok(mut f) => {
-                    let mut f_bytes = vec![];
-                    match f.read_to_end(&mut f_bytes) {
-                        Ok(_) => Ok(f_bytes),
-                        Err(read_err) => Err(format!("{}", read_err)),
-                    }
-                }
-                Err(open_err) => Err(format!("{}", open_err)),
-            }
+            fs::read(source).map_err(|err| format!("{err}"))
         };
 
         match source_bytes {
