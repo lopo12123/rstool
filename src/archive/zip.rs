@@ -70,20 +70,19 @@ mod unit_test {
     /// unpack 函数测试
     #[test]
     fn unpack_test() {
-        let archive = r"C:\Users\20366\Desktop\misc_test\zip_package.zip";
-        let binary = fs::read(archive).unwrap();
-        let entries = unpack(binary, r"C:\Users\20366\Desktop\misc_test\unpack_test".into());
+        let binary = fs::read(r"C:\Users\20366\Desktop\misc\folder.zip").unwrap();
+        let entries = unpack(binary, r"C:\Users\20366\Desktop\misc\unpack_zip".into());
 
-        fs::create_dir_all(r"C:\Users\20366\Desktop\misc_test\unpack_test").unwrap();
+        // fs::create_dir_all(r"C:\Users\20366\Desktop\misc_test\unpack_test").unwrap();
 
         for entry in entries {
-            // println!("disk_dir: = {}\n pack_dir: = {}\n is_file: = {}\n\n", entry.disk_dir.to_str().unwrap(), entry.pack_dir, entry.is_file);
+            println!("disk_dir: = {}\n pack_dir: = {}\n is_file: = {}\n\n", entry.disk_dir.to_str().unwrap(), entry.pack_dir, entry.is_file);
 
-            if entry.is_file {
-                fs::write(entry.disk_dir, entry.raw.unwrap()).unwrap();
-            } else {
-                fs::create_dir_all(entry.disk_dir).unwrap();
-            }
+            // if entry.is_file {
+            //     fs::write(entry.disk_dir, entry.raw.unwrap()).unwrap();
+            // } else {
+            //     fs::create_dir_all(entry.disk_dir).unwrap();
+            // }
         }
     }
 

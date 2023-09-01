@@ -64,6 +64,7 @@ impl UnpackImpl {
     fn unpack(suffix: &str, buffer: Vec<u8>, destination: String) -> Result<Vec<ArchiveEntry>, String> {
         let unpack_worker: Option<UnpackWorker> = match suffix {
             "zip" => Some(zip::unpack),
+            "7z" => Some(sevenz::unpack),
             // TODO: 其他格式
             _ => None,
         };
