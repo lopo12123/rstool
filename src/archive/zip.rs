@@ -63,6 +63,7 @@ pub fn pack(entries: Vec<ArchiveEntry>) -> Vec<u8> {
 
 #[cfg(test)]
 mod unit_test {
+    use std::fs;
     use super::*;
     use crate::archive::utils::ArchiveBuilder;
 
@@ -91,9 +92,9 @@ mod unit_test {
     fn pack_test() {
         // let base = r"C:\Users\20366\Desktop\misc_test\zip";
         let base = r"C:\Users\20366\Desktop\misc";
-        let items = vec!["."];
+        let items = vec![".".into()];
 
-        let entries = ArchiveBuilder::build(base, items).get_entries();
+        let entries = ArchiveBuilder::build(base.into(), items).get_entries();
         let package = pack(entries);
 
         fs::write(r"C:\Users\20366\Desktop\misc.zip", package).unwrap();

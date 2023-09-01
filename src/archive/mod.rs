@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::Read;
 use std::path::{PathBuf};
 use crate::archive::utils::{ArchiveBuilder, ArchiveEntry};
 
