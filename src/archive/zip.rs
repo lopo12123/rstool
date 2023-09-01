@@ -4,39 +4,10 @@ use std::io::{Cursor, Read, Write};
 use std::path::{Path, PathBuf};
 use crate::archive::utils::ArchiveEntry;
 
-pub fn extract_zip(zip_buffer: Vec<u8>, desc: &Path) -> Result<(), String> {
-    let mut archive = zip::ZipArchive::new(Cursor::new(zip_buffer)).unwrap();
-
-    for i in 0..archive.len() {
-        let mut file = archive.by_index(i).unwrap();
-        let outpath = match file.enclosed_name() {
-            Some(path) => desc.join(path),
-            None => continue,
-        };
-
-        // if the entry is a directory, create the directory
-        if file.name().ends_with('/') {
-            fs::create_dir_all(outpath).unwrap();
-        }
-        // if the entry is a file, extract it
-        else {
-            if let Some(p) = outpath.parent() {
-                if !p.exists() {
-                    fs::create_dir_all(p).unwrap();
-                }
-            }
-            let mut outfile = fs::File::create(&outpath).unwrap();
-            std::io::copy(&mut file, &mut outfile).unwrap();
-        }
-    }
-
-    Ok(())
-}
-
 /// 将 zip 解包为 `ArchiveEntry` 列表, 返回 `ArchiveEntry` 列表 (按照文件夹优先, 文件次之的顺序排序)
-pub fn unpack(binary: Vec<u8>, disk_root: impl Into<PathBuf>) -> Vec<ArchiveEntry> {
+pub fn unpack(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
     let mut entries = vec![];
-    let disk_root = disk_root.into();
+    let disk_root: PathBuf = disk_root.into();
 
     let mut archive = zip::ZipArchive::new(Cursor::new(binary)).unwrap();
 
@@ -101,7 +72,7 @@ mod unit_test {
     fn unpack_test() {
         let archive = r"C:\Users\20366\Desktop\misc_test\zip_package.zip";
         let binary = fs::read(archive).unwrap();
-        let entries = unpack(binary, r"C:\Users\20366\Desktop\misc_test\unpack_test");
+        let entries = unpack(binary, r"C:\Users\20366\Desktop\misc_test\unpack_test".into());
 
         fs::create_dir_all(r"C:\Users\20366\Desktop\misc_test\unpack_test").unwrap();
 

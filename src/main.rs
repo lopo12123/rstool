@@ -1,3 +1,4 @@
+use std::env::current_dir;
 use clap::Parser;
 use crate::commands::{Cli, Commands};
 use crate::doc::DocImpl;
@@ -28,7 +29,7 @@ fn main() {
             ImageImpl::handle(source, format, size);
         }
         Commands::Pack { destination, sources } => {
-            PackImpl::handle(destination, sources);
+            PackImpl::handle(current_dir().unwrap(), destination, sources);
         }
         Commands::Serve { root, entry, port, mode } => {
             ServeImpl::handle(root, entry, port, mode);
