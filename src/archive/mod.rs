@@ -18,6 +18,7 @@ impl PackImpl {
         let pack_worker: Option<PackWorker> = match target {
             "zip" => Some(zip::pack),
             "7z" => Some(sevenz::pack),
+            "gz" => Some(tgz::pack_gz),
             // TODO: 其他格式
             _ => None,
         };
@@ -66,6 +67,7 @@ impl UnpackImpl {
         let unpack_worker: Option<UnpackWorker> = match suffix {
             "zip" => Some(zip::unpack),
             "7z" => Some(sevenz::unpack),
+            "gz" => Some(tgz::unpack_gz),
             // TODO: 其他格式
             _ => None,
         };
