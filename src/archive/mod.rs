@@ -17,6 +17,7 @@ impl PackImpl {
     pub fn pack(target: &str, entries: Vec<ArchiveEntry>) -> Result<Vec<u8>, String> {
         let pack_worker: Option<PackWorker> = match target {
             "zip" => Some(zip::pack),
+            "7z" => Some(sevenz::pack),
             // TODO: 其他格式
             _ => None,
         };
