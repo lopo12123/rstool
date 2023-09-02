@@ -73,7 +73,7 @@ mod unit_test {
         let binary = fs::read(r"C:\Users\20366\Desktop\misc\folder.zip").unwrap();
         let entries = unpack(binary, r"C:\Users\20366\Desktop\misc\unpack_zip".into());
 
-        // fs::create_dir_all(r"C:\Users\20366\Desktop\misc_test\unpack_test").unwrap();
+        // fs::create_dir_all(r"C:\Users\20366\Desktop\misc\unpack_test").unwrap();
 
         for entry in entries {
             println!("disk_dir: = {}\n pack_dir: = {}\n is_file: = {}\n\n", entry.disk_dir.to_str().unwrap(), entry.pack_dir, entry.is_file);
