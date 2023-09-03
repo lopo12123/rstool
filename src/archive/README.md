@@ -38,9 +38,9 @@ Options:
 
 | format             | support | note |
 |--------------------|---------|------|
-| `.7z`              | ⏳       |      |
-| `.gz`              | ⏳       |      |
-| `.tar`             | ⏳       |      |
+| `.7z`              | ✅       |      |
+| `.gz`              | ✅       |      |
+| `.tar`             | ✅       |      |
 | `.tgz` / `.tar.gz` | ⏳       | (1)  |
 | `.zip`             | ✅       | (2)  |
 
@@ -51,4 +51,4 @@ Options:
 
 ---
 
-Last modified on **2023-09-01**
+Last modified on **2023-09-03**
