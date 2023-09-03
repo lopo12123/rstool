@@ -19,6 +19,7 @@ impl PackImpl {
             "zip" => Some(zip::pack),
             "7z" => Some(sevenz::pack),
             "gz" => Some(tgz::pack_gz),
+            "tar" => Some(tgz::pack_tar),
             // TODO: 其他格式
             _ => None,
         };
@@ -68,6 +69,7 @@ impl UnpackImpl {
             "zip" => Some(zip::unpack),
             "7z" => Some(sevenz::unpack),
             "gz" => Some(tgz::unpack_gz),
+            "tar" => Some(tgz::unpack_tar),
             // TODO: 其他格式
             _ => None,
         };
