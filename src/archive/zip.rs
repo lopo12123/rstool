@@ -16,12 +16,13 @@ pub fn unpack(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
             Some(dir) => dir.to_str().unwrap().to_string(),
             None => { continue; }
         };
-        let is_file = !file.name().ends_with('/');
+        // let is_file = !file.name().ends_with('/');
 
         entries.push(ArchiveEntry {
             disk_dir: disk_root.join(&pack_dir),
             pack_dir,
-            is_file,
+            is_file: file.is_file(),
+            is_dir: file.is_dir(),
             raw: if file.name().ends_with('/') { None } else {
                 let mut raw: Vec<u8> = vec![];
                 file.read_to_end(&mut raw).unwrap();

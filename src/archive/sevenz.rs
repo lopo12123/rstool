@@ -21,6 +21,7 @@ pub fn unpack(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
             disk_dir: disk_root.join(entry.name()),
             pack_dir: entry.name.clone(),
             is_file: !entry.is_directory,
+            is_dir: entry.is_directory,
             raw: if entry.is_directory { None } else {
                 let mut bytes: Vec<u8> = vec![];
                 reader.read_to_end(&mut bytes).unwrap();

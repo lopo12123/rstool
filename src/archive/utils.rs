@@ -29,6 +29,8 @@ pub struct ArchiveEntry {
     pub pack_dir: String,
     /// 是否为文件
     pub is_file: bool,
+    /// 是否为文件夹
+    pub is_dir: bool,
     /// 二进制数据
     pub raw: Option<Vec<u8>>,
 }
@@ -121,6 +123,7 @@ impl ArchiveBuilder {
                 disk_dir,
                 pack_dir: file.to_string(),
                 is_file: true,
+                is_dir: false,
                 raw,
             });
         }
@@ -133,6 +136,7 @@ impl ArchiveBuilder {
                 disk_dir,
                 pack_dir: folder.to_string(),
                 is_file: false,
+                is_dir: true,
                 raw: None,
             });
         }

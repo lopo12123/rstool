@@ -58,7 +58,7 @@ impl UnpackImpl {
         for item in items {
             if item.is_file {
                 fs::write(item.disk_dir, item.raw.unwrap()).unwrap();
-            } else {
+            } else if item.is_dir {
                 fs::create_dir_all(item.disk_dir).unwrap();
             }
         }
