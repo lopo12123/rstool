@@ -14,8 +14,14 @@ type PackWorker = fn(entries: Vec<ArchiveEntry>) -> Vec<u8>;
 pub struct PackImpl {}
 
 impl PackImpl {
-    pub fn pack(target: &str, entries: Vec<ArchiveEntry>) -> Result<Vec<u8>, String> {
-        let pack_worker: Option<PackWorker> = match target {
+    pub fn pack(target: &PathBuf, entries: Vec<ArchiveEntry>) -> Result<Vec<u8>, String> {
+        let suffix = target.extension().map_or("", |ext| ext.to_str().unwrap_or(""));
+
+        if suffix == "" {
+            return Err(format!("Invalid destination"));
+        }
+
+        let pack_worker: Option<PackWorker> = match suffix {
             "zip" => Some(zip::pack),
             "7z" => Some(sevenz::pack),
             "gz" => Some(tgz::pack_gz),
@@ -25,20 +31,18 @@ impl PackImpl {
         };
 
         match pack_worker {
-            Some(worker) => {
-                Ok(worker(entries))
-            }
+            Some(worker) => Ok(worker(entries)),
             None => Err(format!("Invalid format"))
         }
     }
 
     pub fn handle(root: PathBuf, destination: String, source: Vec<String>) {
-        let target = destination.split(".").last().unwrap_or("").to_string();
         println!("[Commands::Pack] destination = '{destination}', source = '{source:?}'");
 
+        let target = PathBuf::from(destination);
         match PackImpl::pack(&target, ArchiveBuilder::build(root, source).get_entries()) {
             Ok(buffer) => {
-                match fs::write(destination, buffer) {
+                match fs::write(target, buffer) {
                     Ok(_) => println!("Ok"),
                     Err(err) => println!("Error: {err}"),
                 }
@@ -75,9 +79,7 @@ impl UnpackImpl {
         };
 
         match unpack_worker {
-            Some(worker) => {
-                Ok(worker(buffer, destination))
-            }
+            Some(worker) => Ok(worker(buffer, destination)),
             None => Err(format!("Invalid format"))
         }
     }
