@@ -240,7 +240,7 @@ mod unit_test {
         let items = vec!["你好.txt".into()];
 
         let entries = ArchiveBuilder::build(base.into(), items).get_entries();
-        let package = pack_gz(entries);
+        let package = pack_gz(entries, "".to_string());
 
         fs::write(r"C:\Users\20366\Desktop\misc\pack_gz.gz", package).unwrap();
         println!("done!");
@@ -272,7 +272,7 @@ mod unit_test {
         let items = vec!["folder".into()];
 
         let entries = ArchiveBuilder::build(base.into(), items).get_entries();
-        let package = pack_tar(entries);
+        let package = pack_tar(entries, "".to_string());
 
         fs::write(r"C:\Users\20366\Desktop\misc\pack_tar.tar", package).unwrap();
         println!("done!");
@@ -304,7 +304,7 @@ mod unit_test {
         let items = vec!["folder".into()];
 
         let entries = ArchiveBuilder::build(base.into(), items).get_entries();
-        let package = pack_tar(entries);
+        let package = pack_tar(entries, "".to_string());
 
         fs::write(r"C:\Users\20366\Desktop\misc\pack_tgz.tgz", package).unwrap();
         println!("done!");
