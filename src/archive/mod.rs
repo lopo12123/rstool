@@ -62,7 +62,10 @@ type UnpackWorker = fn(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry>;
 pub struct UnpackImpl {}
 
 impl UnpackImpl {
-    fn write_to_disk(items: Vec<ArchiveEntry>) {
+    fn write_to_disk(items: Vec<ArchiveEntry>, destination: String) {
+        // ensure destination exists
+        fs::create_dir_all(&destination).unwrap();
+
         for item in items {
             if item.is_file {
                 fs::write(item.disk_dir, item.raw.unwrap()).unwrap();
@@ -93,9 +96,9 @@ impl UnpackImpl {
         println!("[Commands::Unpack] source = '{source}', destination = '{destination}', suffix = '{suffix}'");
 
         match fs::read(source) {
-            Ok(buffer) => match UnpackImpl::unpack(&suffix, buffer, destination) {
+            Ok(buffer) => match UnpackImpl::unpack(&suffix, buffer, destination.clone()) {
                 Ok(items) => {
-                    UnpackImpl::write_to_disk(items);
+                    UnpackImpl::write_to_disk(items, destination);
                     println!("Ok");
                 }
                 Err(unpack_err) => println!("Error: {unpack_err}"),
