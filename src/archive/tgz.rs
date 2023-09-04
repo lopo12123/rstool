@@ -35,17 +35,20 @@ pub fn unpack_gz(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
 }
 
 /// 将 `ArchiveEntry` 列表打包为 gz, 返回二进制数据 (仅压缩第一项文件, 若列表都是文件夹则返回空)
-pub fn pack_gz(entries: Vec<ArchiveEntry>) -> Vec<u8> {
+pub fn pack_gz(entries: Vec<ArchiveEntry>, _filename: String) -> Vec<u8> {
     // 找到第一个文件, 作为压缩对象
     match entries.into_iter().find(|entry| entry.is_file) {
         // 若列表中有文件则压缩第一个文件
         Some(file) => {
-            let mut bundle = GzBuilder::new().filename(file.pack_dir).write(Cursor::new(vec![]), Compression::default());
+            let filename = PathBuf::from(file.pack_dir).file_name().map_or("UNKNOWN_FILE".to_string(), |name| name.to_str().unwrap().to_string());
+            println!("WARNING: 'pack_gz' only compress the first file, filename = '{}'", filename);
+            let mut bundle = GzBuilder::new().filename(filename).write(Cursor::new(vec![]), Compression::default());
             bundle.write_all(file.raw.unwrap().as_slice()).unwrap();
             bundle.finish().unwrap().into_inner()
         }
         // 若列表都是文件夹则返回空
         None => {
+            println!("Error: 'pack_gz' failed, all entries are folders");
             vec![]
         }
     }
@@ -92,7 +95,7 @@ pub fn unpack_tar(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
 }
 
 /// 将 `ArchiveEntry` 列表打包为 tar, 返回二进制数据
-pub fn pack_tar(entries: Vec<ArchiveEntry>) -> Vec<u8> {
+pub fn pack_tar(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8> {
     let mut bundle = tar::Builder::new(Cursor::new(vec![]));
 
     for entry in entries {
@@ -174,15 +177,16 @@ pub fn pack_tgz(entries: Vec<ArchiveEntry>) -> Vec<u8> {
 
     let tar_raw = tar_bundle.into_inner().unwrap().into_inner();
 
-    pack_gz(vec![
-        ArchiveEntry {
-            disk_dir: PathBuf::from("middle.tar"),
-            pack_dir: "middle.tar".into(),
-            is_file: true,
-            is_dir: false,
-            raw: Some(tar_raw),
-        }
-    ])
+    // pack_gz(vec![
+    //     ArchiveEntry {
+    //         disk_dir: PathBuf::from("middle.tar"),
+    //         pack_dir: "middle.tar".into(),
+    //         is_file: true,
+    //         is_dir: false,
+    //         raw: Some(tar_raw),
+    //     }
+    // ])
+    todo!()
 
     // tar_bundle.into_inner().unwrap().finish().unwrap().into_inner()
 

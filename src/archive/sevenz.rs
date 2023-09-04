@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 use std::io::{Cursor};
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use sevenz_rust::{Password, SevenZArchiveEntry};
 use crate::archive::utils::ArchiveEntry;
 
@@ -48,7 +48,7 @@ pub fn unpack(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
 }
 
 /// 将 `ArchiveEntry` 列表打包为 7z, 返回二进制数据
-pub fn pack(entries: Vec<ArchiveEntry>) -> Vec<u8> {
+pub fn pack(entries: Vec<ArchiveEntry>, _filename: String) -> Vec<u8> {
     let mut bundle = sevenz_rust::SevenZWriter::new(Cursor::new(vec![])).unwrap();
 
     for entry in entries {
@@ -95,7 +95,7 @@ mod unit_test {
         let items = vec!["folder".into()];
 
         let entries = ArchiveBuilder::build(base.into(), items).get_entries();
-        let package = pack(entries);
+        let package = pack(entries, "".to_string());
 
         fs::write(r"C:\Users\20366\Desktop\misc\folder.7z", package).unwrap();
         println!("done!");

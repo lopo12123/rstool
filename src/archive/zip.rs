@@ -46,7 +46,7 @@ pub fn unpack(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
 }
 
 /// 将 `ArchiveEntry` 列表打包为 zip, 返回二进制数据
-pub fn pack(entries: Vec<ArchiveEntry>) -> Vec<u8> {
+pub fn pack(entries: Vec<ArchiveEntry>, _filename: String) -> Vec<u8> {
     let mut bundle = zip::ZipWriter::new(Cursor::new(vec![]));
 
     // 路径层级只能用 '/' 分隔
@@ -95,7 +95,7 @@ mod unit_test {
         let items = vec![".".into()];
 
         let entries = ArchiveBuilder::build(base.into(), items).get_entries();
-        let package = pack(entries);
+        let package = pack(entries, "".to_string());
 
         fs::write(r"C:\Users\20366\Desktop\misc.zip", package).unwrap();
         println!("done!");

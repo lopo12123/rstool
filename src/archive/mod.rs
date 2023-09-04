@@ -9,16 +9,20 @@ mod utils;
 
 // ==================== Pack ====================
 
-type PackWorker = fn(entries: Vec<ArchiveEntry>) -> Vec<u8>;
+type PackWorker = fn(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8>;
 
 pub struct PackImpl {}
 
 impl PackImpl {
     pub fn pack(target: &PathBuf, entries: Vec<ArchiveEntry>) -> Result<Vec<u8>, String> {
         let suffix = target.extension().map_or("", |ext| ext.to_str().unwrap_or(""));
-
         if suffix == "" {
-            return Err(format!("Invalid destination"));
+            return Err(format!("Fail to parse suffix"));
+        }
+
+        let filename = target.file_name().map_or("", |name| name.to_str().unwrap_or(""));
+        if filename == "" {
+            return Err(format!("Fail to parse filename"));
         }
 
         let pack_worker: Option<PackWorker> = match suffix {
@@ -31,7 +35,7 @@ impl PackImpl {
         };
 
         match pack_worker {
-            Some(worker) => Ok(worker(entries)),
+            Some(worker) => Ok(worker(entries, filename.to_string())),
             None => Err(format!("Invalid format"))
         }
     }
