@@ -12,9 +12,9 @@ pub fn unpack_gz(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
 
     let disk_root: PathBuf = disk_root.into();
     let pack_dir = archive.header().map_or(
-        "UnnamedFile".to_string(),
+        "UNKNOWN_FILE".to_string(),
         |header| header.filename().map_or(
-            "UnnamedFile".to_string(),
+            "UNKNOWN_FILE".to_string(),
             |name| String::from_utf8_lossy(name).to_string(),
         ),
     );
