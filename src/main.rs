@@ -16,6 +16,7 @@ mod fontmin;
 mod image;
 
 fn main() {
+    // TODO: use try_parse instead, to avoid panic on debug mode
     let cmd = Cli::parse().command;
 
     match cmd {
