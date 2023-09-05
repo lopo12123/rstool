@@ -7,55 +7,6 @@ mod tgz;
 mod zip;
 mod utils;
 
-// ==================== Pack ====================
-
-type PackWorker = fn(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8>;
-
-pub struct PackImpl {}
-
-impl PackImpl {
-    pub fn pack(target: &PathBuf, entries: Vec<ArchiveEntry>) -> Result<Vec<u8>, String> {
-        let suffix = target.extension().map_or("", |ext| ext.to_str().unwrap_or(""));
-        if suffix == "" {
-            return Err(format!("Fail to parse suffix"));
-        }
-
-        let filename = target.file_name().map_or("", |name| name.to_str().unwrap_or(""));
-        if filename == "" {
-            return Err(format!("Fail to parse filename"));
-        }
-
-        let pack_worker: Option<PackWorker> = match suffix {
-            "zip" => Some(zip::pack),
-            "7z" => Some(sevenz::pack),
-            "gz" => Some(tgz::pack_gz),
-            "tar" => Some(tgz::pack_tar),
-            // TODO: 其他格式
-            _ => None,
-        };
-
-        match pack_worker {
-            Some(worker) => Ok(worker(entries, filename.to_string())),
-            None => Err(format!("Invalid format"))
-        }
-    }
-
-    pub fn handle(root: PathBuf, destination: String, source: Vec<String>) {
-        println!("[Commands::Pack] destination = '{destination}', source = '{source:?}'");
-
-        let target = PathBuf::from(destination);
-        match PackImpl::pack(&target, ArchiveBuilder::build(root, source).get_entries()) {
-            Ok(buffer) => {
-                match fs::write(target, buffer) {
-                    Ok(_) => println!("Ok"),
-                    Err(err) => println!("Error: {err}"),
-                }
-            }
-            Err(pack_err) => println!("Error: {pack_err}"),
-        }
-    }
-}
-
 // ==================== UnPack ====================
 type UnpackWorker = fn(binary: Vec<u8>, source_stem: String, disk_root: String) -> Vec<ArchiveEntry>;
 
@@ -85,7 +36,7 @@ impl UnpackImpl {
             "7z" => Some(sevenz::unpack),
             "gz" => Some(tgz::unpack_gz),
             "tar" => Some(tgz::unpack_tar),
-            // TODO: 其他格式
+            "tgz" => Some(tgz::unpack_tgz),
             _ => None,
         };
 
@@ -108,6 +59,55 @@ impl UnpackImpl {
                 Err(unpack_err) => println!("Error: {unpack_err}"),
             }
             Err(read_err) => println!("Error: {read_err}"),
+        }
+    }
+}
+
+// ==================== Pack ====================
+
+type PackWorker = fn(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8>;
+
+pub struct PackImpl {}
+
+impl PackImpl {
+    pub fn pack(target: &PathBuf, entries: Vec<ArchiveEntry>) -> Result<Vec<u8>, String> {
+        let suffix = target.extension().map_or("", |ext| ext.to_str().unwrap_or(""));
+        if suffix == "" {
+            return Err(format!("Fail to parse suffix"));
+        }
+
+        let filename = target.file_name().map_or("", |name| name.to_str().unwrap_or(""));
+        if filename == "" {
+            return Err(format!("Fail to parse filename"));
+        }
+
+        let pack_worker: Option<PackWorker> = match suffix {
+            "zip" => Some(zip::pack),
+            "7z" => Some(sevenz::pack),
+            "gz" => Some(tgz::pack_gz),
+            "tar" => Some(tgz::pack_tar),
+            "tgz" => Some(tgz::pack_tgz),
+            _ => None,
+        };
+
+        match pack_worker {
+            Some(worker) => Ok(worker(entries, filename.to_string())),
+            None => Err(format!("Invalid format"))
+        }
+    }
+
+    pub fn handle(root: PathBuf, destination: String, source: Vec<String>) {
+        println!("[Commands::Pack] destination = '{destination}', source = '{source:?}'");
+
+        let target = PathBuf::from(destination);
+        match PackImpl::pack(&target, ArchiveBuilder::build(root, source).get_entries()) {
+            Ok(buffer) => {
+                match fs::write(target, buffer) {
+                    Ok(_) => println!("Ok"),
+                    Err(err) => println!("Error: {err}"),
+                }
+            }
+            Err(pack_err) => println!("Error: {pack_err}"),
         }
     }
 }

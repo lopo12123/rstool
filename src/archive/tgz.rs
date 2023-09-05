@@ -116,7 +116,7 @@ pub fn pack_tar(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8> {
 
 
 /// 将 tgz 解包为 `ArchiveEntry` 列表, 返回 `ArchiveEntry` 列表 (按照文件夹优先, 文件次之的顺序排序)
-pub fn unpack_tgz(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
+pub fn unpack_tgz(binary: Vec<u8>, _source_stem: String, disk_root: String) -> Vec<ArchiveEntry> {
     let mut entries = vec![];
     let disk_root: PathBuf = disk_root.into();
 
@@ -157,7 +157,7 @@ pub fn unpack_tgz(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
 
 
 /// 将 `ArchiveEntry` 列表打包为 tgz, 返回二进制数据
-pub fn pack_tgz(entries: Vec<ArchiveEntry>) -> Vec<u8> {
+pub fn pack_tgz(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8> {
     let mut tar_bundle = tar::Builder::new(Cursor::new(vec![]));
 
     for entry in entries {
