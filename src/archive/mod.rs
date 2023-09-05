@@ -135,7 +135,7 @@ mod unit_test {
     fn filename_test() {
         let source_name = "a/b/c/filename.tar.gz".to_string();
 
-        let parse = PathBuf::from(source_name);
+        let parse = PathBuf::from(source_name).with_extension("tar");
 
         println!("filename: {:?}", parse.file_name().unwrap());
         println!("extension: {:?}", parse.extension().unwrap());

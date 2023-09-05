@@ -1,9 +1,8 @@
 use std::cmp::Ordering;
 use std::io::{Cursor, Read, Write};
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use flate2::{Compression, GzBuilder};
 use flate2::read::GzDecoder;
-use flate2::write::GzEncoder;
 use crate::archive::utils::ArchiveEntry;
 
 /// 将 gz 解包为 `ArchiveEntry` 列表, 返回 `ArchiveEntry` 列表 (仅包含一项 `ArchiveEntry`)
@@ -95,7 +94,7 @@ pub fn unpack_tar(binary: Vec<u8>, _source_stem: String, disk_root: String) -> V
 }
 
 /// 将 `ArchiveEntry` 列表打包为 tar, 返回二进制数据
-pub fn pack_tar(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8> {
+pub fn pack_tar(entries: Vec<ArchiveEntry>, _filename: String) -> Vec<u8> {
     let mut bundle = tar::Builder::new(Cursor::new(vec![]));
 
     for entry in entries {
@@ -158,7 +157,11 @@ pub fn unpack_tgz(binary: Vec<u8>, _source_stem: String, disk_root: String) -> V
 
 /// 将 `ArchiveEntry` 列表打包为 tgz, 返回二进制数据
 pub fn pack_tgz(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8> {
-    let mut tar_bundle = tar::Builder::new(Cursor::new(vec![]));
+    let tar_filename = PathBuf::from(filename).with_extension("tar");
+    let gz_bundle = GzBuilder::new()
+        .filename(tar_filename.to_str().unwrap())
+        .write(Cursor::new(vec![]), Compression::default());
+    let mut tar_bundle = tar::Builder::new(gz_bundle);
 
     for entry in entries {
         if entry.is_file {
@@ -173,39 +176,7 @@ pub fn pack_tgz(entries: Vec<ArchiveEntry>, filename: String) -> Vec<u8> {
         }
     }
 
-    // let gz_bundle = GzBuilder::new().filename("middle.tar").write(Cursor::new(vec![]), Compression::default());
-
-    let tar_raw = tar_bundle.into_inner().unwrap().into_inner();
-
-    // pack_gz(vec![
-    //     ArchiveEntry {
-    //         disk_dir: PathBuf::from("middle.tar"),
-    //         pack_dir: "middle.tar".into(),
-    //         is_file: true,
-    //         is_dir: false,
-    //         raw: Some(tar_raw),
-    //     }
-    // ])
-    todo!()
-
-    // tar_bundle.into_inner().unwrap().finish().unwrap().into_inner()
-
-    // let mut gz_bundle = GzBuilder::new().filename("compress.tar").write(Cursor::new(vec![]), Compression::default());
-    // gz_bundle.write_all(&bundle.into_inner().unwrap().into_inner()).unwrap();
-    // gz_bundle.finish().unwrap().into_inner()
-    // gz_bundle.write(&bundle.into_inner().unwrap().into_inner()).unwrap();
-    // gz_bundle.finish().unwrap().into_inner()
-}
-
-
-/// tgz(tar.gz) 即 tar + gzip
-pub fn extract_tgz(tgz_buffer: Vec<u8>, dest: &Path) -> Result<(), String> {
-    match tar::Archive::new(
-        GzDecoder::new(Cursor::new(tgz_buffer))
-    ).unpack(dest) {
-        Ok(_) => Ok(()),
-        Err(err) => Err(format!("{}", err)),
-    }
+    tar_bundle.into_inner().unwrap().finish().unwrap().into_inner()
 }
 
 #[cfg(test)]
