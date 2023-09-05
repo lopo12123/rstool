@@ -5,7 +5,7 @@ use sevenz_rust::{Password, SevenZArchiveEntry};
 use crate::archive::utils::ArchiveEntry;
 
 /// 将 7z 解包为 `ArchiveEntry` 列表, 返回 `ArchiveEntry` 列表 (按照文件夹优先, 文件次之的顺序排序)
-pub fn unpack(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry> {
+pub fn unpack(binary: Vec<u8>, _source_stem: String, disk_root: String) -> Vec<ArchiveEntry> {
     let mut entries = vec![];
     let disk_root: PathBuf = disk_root.into();
 
@@ -72,7 +72,7 @@ mod unit_test {
     #[test]
     fn unpack_test() {
         let binary = fs::read(r"C:\Users\20366\Desktop\misc\folder.7z").unwrap();
-        let entries = unpack(binary, r"C:\Users\20366\Desktop\misc\unpack_7z".into());
+        let entries = unpack(binary, "".to_string(), r"C:\Users\20366\Desktop\misc\unpack_7z".into());
 
         // fs::create_dir_all(r"C:\Users\20366\Desktop\misc\unpack_7z").unwrap();
 

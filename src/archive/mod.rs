@@ -57,7 +57,7 @@ impl PackImpl {
 }
 
 // ==================== UnPack ====================
-type UnpackWorker = fn(binary: Vec<u8>, disk_root: String) -> Vec<ArchiveEntry>;
+type UnpackWorker = fn(binary: Vec<u8>, source_stem: String, disk_root: String) -> Vec<ArchiveEntry>;
 
 pub struct UnpackImpl {}
 
@@ -75,7 +75,11 @@ impl UnpackImpl {
         }
     }
 
-    fn unpack(suffix: &str, buffer: Vec<u8>, destination: String) -> Result<Vec<ArchiveEntry>, String> {
+    fn unpack(buffer: Vec<u8>, source_path: String, destination: String) -> Result<Vec<ArchiveEntry>, String> {
+        let parsed_path = PathBuf::from(source_path);
+        let stem = parsed_path.file_stem().unwrap().to_str().unwrap();
+        let suffix = parsed_path.extension().unwrap().to_str().unwrap();
+
         let unpack_worker: Option<UnpackWorker> = match suffix {
             "zip" => Some(zip::unpack),
             "7z" => Some(sevenz::unpack),
@@ -86,7 +90,7 @@ impl UnpackImpl {
         };
 
         match unpack_worker {
-            Some(worker) => Ok(worker(buffer, destination)),
+            Some(worker) => Ok(worker(buffer, stem.to_string(), destination)),
             None => Err(format!("Invalid format"))
         }
     }
@@ -95,8 +99,8 @@ impl UnpackImpl {
         let suffix = source.split(".").last().unwrap_or("").to_string();
         println!("[Commands::Unpack] source = '{source}', destination = '{destination}', suffix = '{suffix}'");
 
-        match fs::read(source) {
-            Ok(buffer) => match UnpackImpl::unpack(&suffix, buffer, destination.clone()) {
+        match fs::read(&source) {
+            Ok(buffer) => match UnpackImpl::unpack(buffer, source, destination.clone()) {
                 Ok(items) => {
                     UnpackImpl::write_to_disk(items, destination);
                     println!("Ok");
@@ -110,6 +114,7 @@ impl UnpackImpl {
 
 #[cfg(test)]
 mod unit_test {
+    use std::path::PathBuf;
     use walkdir::WalkDir;
 
     #[test]
@@ -124,5 +129,16 @@ mod unit_test {
 
             println!("path: {:?}\nto_str: {:?}\n", &path, path_str);
         }
+    }
+
+    #[test]
+    fn filename_test() {
+        let source_name = "a/b/c/filename.tar.gz".to_string();
+
+        let parse = PathBuf::from(source_name);
+
+        println!("filename: {:?}", parse.file_name().unwrap());
+        println!("extension: {:?}", parse.extension().unwrap());
+        println!("extension: {:?}", parse.file_stem().unwrap());
     }
 }
