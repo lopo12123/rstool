@@ -41,7 +41,7 @@ Options:
 | `.7z`              | ✅       |      |
 | `.gz`              | ✅       |      |
 | `.tar`             | ✅       |      |
-| `.tgz` / `.tar.gz` | ⏳       | (1)  |
+| `.tgz` / `.tar.gz` | ✅       | (1)  |
 | `.zip`             | ✅       | (2)  |
 
 1. `*.tar.gz` is exactly the same as `*.tgz`
@@ -51,4 +51,4 @@ Options:
 
 ---
 
-Last modified on **2023-09-03**
+Last modified on **2023-09-06**
