@@ -132,6 +132,11 @@ impl ServeImpl {
         rocket::build()
             .manage(StateSingle { entry })
             .configure(config)
+            .attach(rocket::fairing::AdHoc::on_response("CORS", |_, res| Box::pin(async move {
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Origin", "*"));
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Methods", "*"));
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Headers", "Content-Type"));
+            })))
             .mount("/", routes![index_single])
             .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
@@ -141,6 +146,11 @@ impl ServeImpl {
         rocket::build()
             .manage(StateMixed { root, entry })
             .configure(config)
+            .attach(rocket::fairing::AdHoc::on_response("CORS", |_, res| Box::pin(async move {
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Origin", "*"));
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Methods", "*"));
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Headers", "Content-Type"));
+            })))
             .mount("/", routes![index_mixed])
             .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
@@ -150,6 +160,11 @@ impl ServeImpl {
         rocket::build()
             .manage(StateDirect { root, entry })
             .configure(config)
+            .attach(rocket::fairing::AdHoc::on_response("CORS", |_, res| Box::pin(async move {
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Origin", "*"));
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Methods", "*"));
+                res.set_header(rocket::http::Header::new("Access-Control-Allow-Headers", "Content-Type"));
+            })))
             .mount("/", routes![index_direct])
             .register("/", catchers![not_found, internal_error])
             .launch().await.ok();
@@ -169,8 +184,8 @@ impl ServeImpl {
                 let config = Config {
                     port: server.port,
                     address: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
-                    // ..Config::debug_default()
-                    ..Config::release_default()
+                    ..Config::debug_default()
+                    // ..Config::release_default()
                 };
 
                 match server.mode {
