@@ -136,6 +136,8 @@ impl ServeImpl {
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Origin", "*"));
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Methods", "*"));
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Headers", "Content-Type"));
+                // remove this header to allow iframe
+                res.remove_header("X-Frame-Options")
             })))
             .mount("/", routes![index_single])
             .register("/", catchers![not_found, internal_error])
@@ -150,6 +152,8 @@ impl ServeImpl {
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Origin", "*"));
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Methods", "*"));
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Headers", "Content-Type"));
+                // remove this header to allow iframe
+                res.remove_header("X-Frame-Options")
             })))
             .mount("/", routes![index_mixed])
             .register("/", catchers![not_found, internal_error])
@@ -164,6 +168,8 @@ impl ServeImpl {
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Origin", "*"));
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Methods", "*"));
                 res.set_header(rocket::http::Header::new("Access-Control-Allow-Headers", "Content-Type"));
+                // remove this header to allow iframe
+                res.remove_header("X-Frame-Options")
             })))
             .mount("/", routes![index_direct])
             .register("/", catchers![not_found, internal_error])
