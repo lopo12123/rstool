@@ -25,12 +25,13 @@ a cli tools written in rust
 Usage: rstool.exe <COMMAND>
 
 Commands:
-  doc      Open the document in the default browser
-  extract  Extract compressed or archived files
-  hash     Get the digest of the specified source
-  image    Convert the specified image to the specified format and/or size  (simple show the metadata of the image if both format and size are omitted)
-  serve    Start a static resource server in the specified directory
-  help     Print this message or the help of the given subcommand(s)
+  doc     Open the document in the default browser
+  hash    Get the digest of the specified source
+  image   Convert the specified image to the specified format and/or size  (simple show the metadata of the image if both format and size are omitted)
+  pack    Pack any number of files or directories (possibly both) into an archive or compressed package of the specified format. (Supported values are: '*.7z', '*.tar', '*.tgz', '*.tar.gz', '*.zip', case insensitive)
+  serve   Start a static resource server in the specified directory
+  unpack  Unpack the specified archive or compressed package into the specified directory. (Supported values are: '*.7z', '*.tar', '*.tgz'/'*.tar.gz', '*.zip', case insensitive)
+  help    Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help     Print help
@@ -39,14 +40,14 @@ Options:
 
 ### Support Matrix
 
-| command   | cli | node-addon | wasm | details                                      |
-|-----------|-----|------------|------|----------------------------------------------|
-| `Doc`     | ✅   | ⏳          | ⏳    | [Commands::doc](./src/doc/README.md)         |
-| `Extract` | ✅   | ⏳          | ⏳    | [Commands::extract](src/archive/README.md) |
-| `Hash`    | ✅   | ⏳          | ⏳    | [Commands::hash](./src/hash/README.md)       |
-| `Image`   | ✅   | ⏳          | ⏳    | [Commands::image](./src/image/README.md)     |
-| `Serve`   | ✅   | ⏳          | ⏳    | [Commands::serve](./src/serve/README.md)     |
-| ...       | ... | ...        | ...  ||
+| command           | cli | node-addon | wasm | details                                                    |
+|-------------------|-----|------------|------|------------------------------------------------------------|
+| `Doc`             | ✅   | ⏳          | ⏳    | [Commands::doc](./src/doc/README.md)                       |
+| `Hash`            | ✅   | ⏳          | ⏳    | [Commands::hash](./src/hash/README.md)                     |
+| `Image`           | ✅   | ⏳          | ⏳    | [Commands::image](./src/image/README.md)                   |
+| `Pack` / `Unpack` | ✅   | ⏳          | ⏳    | [Commands::pack / Commands::unpack](src/archive/README.md) |
+| `Serve`           | ✅   | ⏳          | ⏳    | [Commands::serve](./src/serve/README.md)                   |
+| ...               | ... | ...        | ...  |                                                            |
 
 - ✅ - **supported**
 - ➖ - **partially supported**
@@ -59,4 +60,4 @@ see at [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-Last modified on **2023-07-22**
+Last modified on **2023-09-06**

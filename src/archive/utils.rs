@@ -2,19 +2,6 @@ use std::{fs};
 use std::path::{PathBuf};
 use walkdir::WalkDir;
 
-/// 确保目标目录一定存在 (若不存在则自动创建)
-pub fn ensured_path(target: String) -> Result<PathBuf, String> {
-    let path = PathBuf::from(target);
-    if !path.exists() {
-        match fs::create_dir_all(&path) {
-            Ok(_) => Ok(path),
-            Err(err) => Err(format!("{err}"))
-        }
-    } else {
-        Ok(path)
-    }
-}
-
 // --------------------- PathType --------------------------
 #[derive(Debug)]
 enum PathType { File, Folder, NotExist }
@@ -42,6 +29,8 @@ pub struct ArchiveEntry {
     pub pack_dir: String,
     /// 是否为文件
     pub is_file: bool,
+    /// 是否为文件夹
+    pub is_dir: bool,
     /// 二进制数据
     pub raw: Option<Vec<u8>>,
 }
@@ -60,16 +49,16 @@ pub struct ArchiveBuilder {
 
 impl ArchiveBuilder {
     /// 解析 `items`, 分为 `as_file`, `as_folder`, `ignored` 三类
-    fn parse_items(&mut self, items: Vec<&str>) {
+    fn parse_items(&mut self, items: Vec<String>) {
         for item in items {
             // 拼接出条目的完整路径
             let mut disk_dir = self.disk_root.clone();
-            disk_dir.push(item);
+            disk_dir.push(item.clone());
 
             match PathType::parse(&disk_dir) {
                 // 若为文件则添加文件
                 PathType::File => {
-                    self.as_file.push(item.to_string());
+                    self.as_file.push(item);
                 }
                 // 若为文件夹则添加文件夹中的所有文件
                 PathType::Folder => {
@@ -100,16 +89,16 @@ impl ArchiveBuilder {
                 }
                 // 不存在则忽略
                 PathType::NotExist => {
-                    self.ignored.push(item.to_string());
+                    self.ignored.push(item);
                 }
             }
         }
     }
 
     /// parse items into `file` or `folder` or `ignored`, based on `disk_root`
-    pub fn build(disk_root: impl Into<PathBuf>, items: Vec<&str>) -> ArchiveBuilder {
+    pub fn build(disk_root: PathBuf, items: Vec<String>) -> ArchiveBuilder {
         let mut prefab = ArchiveBuilder {
-            disk_root: disk_root.into(),
+            disk_root,
             as_file: vec![],
             as_folder: vec![],
             ignored: vec![],
@@ -134,6 +123,7 @@ impl ArchiveBuilder {
                 disk_dir,
                 pack_dir: file.to_string(),
                 is_file: true,
+                is_dir: false,
                 raw,
             });
         }
@@ -146,6 +136,7 @@ impl ArchiveBuilder {
                 disk_dir,
                 pack_dir: folder.to_string(),
                 is_file: false,
+                is_dir: true,
                 raw: None,
             });
         }
@@ -161,10 +152,11 @@ mod unit_test {
     /// ArchiveBuilder build 测试
     #[test]
     fn build_test() {
-        let base = r"C:\Users\20366\Desktop\misc_test\zip";
-        let items = vec!["."];
+        // let base = r"C:\Users\20366\Desktop\misc_test\zip";
+        let base = r"C:\Users\20366\Desktop\misc";
+        let items = vec![".".into()];
 
-        let b = ArchiveBuilder::build(base, items);
+        let b = ArchiveBuilder::build(base.into(), items);
 
         for folder in b.as_folder {
             println!("folder: {}", folder);

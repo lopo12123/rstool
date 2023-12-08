@@ -123,7 +123,7 @@ impl ImageImpl {
 
 #[cfg(test)]
 mod unit_test {
-    use std::path::{Path, PathBuf};
+    use std::path::{PathBuf};
 
     #[test]
     fn tt() {
